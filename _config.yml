@@ -16,14 +16,14 @@ timezone: AEDT
 
 title: n0debranch # the main title
 
-tagline: noob takes on networking # it will display as the subtitle
+tagline: noob takes on networking & cyber sec # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   A minimal, responsive and feature-rich Jekyll theme for technical writing.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://n0debranch.github.io/"
+url: "https://n0debranch.github.io"
 
 github:
   username: github_username # change to your GitHub username
