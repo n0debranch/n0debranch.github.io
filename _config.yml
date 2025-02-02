@@ -26,15 +26,15 @@ description: >- # used by seo meta and the atom feed
 url: "https://n0debranch.github.io/"
 
 github:
-  username: n0debranch # change to your GitHub username
+  username: github_username # change to your GitHub username
 
 twitter:
-  username: n0debranch # change to your Twitter username
+  username: twitter_username # change to your Twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: n0debranch
+  name: your_full_name
   email: example@domain.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
@@ -88,7 +88,7 @@ pageviews:
 #     light — Use the light color scheme
 #     dark — Use the dark color scheme
 #
-theme_mode: dark # [light | dark]
+theme_mode: # [light | dark]
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url
@@ -150,7 +150,7 @@ pwa:
 paginate: 10
 
 # The base URL of your site
-baseurl: "https://n0debranch.github.io/"
+baseurl: ""
 
 # ------------ The following options are not recommended to be modified ------------------
 
