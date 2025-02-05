@@ -1,6 +1,6 @@
 ---
 title: "Sample Post"
-date: 2025-02-05 12:00:00 +0000
+date: 2025-02-04 12:00:00 +1000
 categories: [blog]
 tags: [jekyll, chirpy, tutorial]
 ---
