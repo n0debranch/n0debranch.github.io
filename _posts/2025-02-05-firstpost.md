@@ -6,3 +6,4 @@ tags: [cyber, network]
 ---
 
 This is a test post.
+![Desktop View](/assets/img/pepe/pepp1p1.png){: width="700" height="400" }
