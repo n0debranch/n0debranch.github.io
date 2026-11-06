@@ -5,9 +5,12 @@ This is an ordinary Git repository. Editing, building, and hosting do not requir
 
 ## Current status
 
-Configured locally for https://mccorkell.au with Australia/Brisbane time.
+Configured for https://mccorkell.au with Australia/Brisbane time.
 The provisional title and author name are n0debranch. Change them in _config.yml.
-GitHub publishing and DNS have not been configured. A local build has not yet been run.
+Repository: https://github.com/n0debranch/n0debranch.github.io
+GitHub Pages uses the included GitHub Actions workflow, with mccorkell.au saved as the custom domain.
+The production build and internal link checks passed on GitHub Actions. DNS at VentraIP still needs to point to GitHub Pages; HTTPS will become available after DNS validation.
+The instructions below also document how to reproduce the setup independently.
 
 ## Publish on GitHub Pages
 
