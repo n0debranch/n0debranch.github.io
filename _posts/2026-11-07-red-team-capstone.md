@@ -41,7 +41,6 @@ html[data-mode="dark"] .capstone-article .code-risk { color: #ff938a; }
 <div class="capstone-article">
 <!-- PDF page 1 -->
 <section id="pdf-page-1" class="pdf-source-section" data-pdf-page="1" aria-label="Source page 1">
-<p>By Bryce Mccorkell.</p>
 
 <h2 id="welcome-to-trimento">Welcome to Trimento!</h2>
 
