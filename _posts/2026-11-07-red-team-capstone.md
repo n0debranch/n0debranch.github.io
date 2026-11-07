@@ -610,7 +610,7 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <figure style="width: 74.63%"><a href="/assets/img/posts/red-team-capstone/page-33-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-33-figure-03.png" alt="Signed in as local admin" width="760" height="298" loading="lazy"></a></figure>
 
-<p>I then wrote the requested evidence file under the Administrator profile. This confirms access for that operation; it does not mean UAC was disabled or that every subsequent process would be elevated.</p>
+<p>I then wrote the requested evidence file under the Administrator profile.</p>
 </section>
 
 <!-- PDF page 34 -->
