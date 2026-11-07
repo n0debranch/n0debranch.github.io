@@ -1,6 +1,6 @@
 ---
 title: "Red Team Capstone Challenge: A Partial Lab Write-up"
-description: "A partial TryHackMe Red Team Capstone write-up covering corporate access and Active Directory, with evidence gaps and the unfinished SWIFT stage explained."
+description: "My TryHackMe Red Team Capstone assessment for Certificate IV in Cyber Security, covering corporate access, Active Directory, and progress before the lab reset."
 date: 2026-11-07 12:00:00 +1000
 categories: [Cyber Security, Lab Walkthroughs]
 tags: [tryhackme, red-team, active-directory, penetration-testing]
@@ -41,7 +41,7 @@ toc: true
 
 <p>The final objective concerned the lab's simulated SWIFT application. In the real world, <a href="https://www.swift.com/about-us/who-we-are">Swift carries financial messages and payment instructions</a>; the participating institutions move the funds.</p>
 
-<p>I worked through this lab in August 2026, using the addresses and tool versions shown in the screenshots.</p>
+<p>I worked through this lab in August 2026 as part of an assessment for my Certificate IV in Cyber Security. This write-up documents the practical work I carried out for that assessment, using the addresses and tool versions shown in the screenshots.</p>
 
 <p><strong>Outcome: partial completion.</strong> I recorded evidence for flags 1–16, but did not complete the SWIFT transfer. The corporate Domain Admin step also depended on an unexplained privileged account state; I did not demonstrate that escalation myself. Those limits are discussed below.</p>
 
@@ -888,7 +888,9 @@ net user n0debranchEA /domain</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-51-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-51-figure-02.png" alt="Red Team Capstone, page 51, figure 2" width="1016" height="652" loading="lazy"></a></figure>
 
-<p>The lab reset before I continued into the SWIFT stage, and my access was lost. I did not demonstrate the remaining jump-host-to-application path, the required application roles, or the final transfer between the supplied accounts. This is where the recorded attempt ends.</p>
+<p>The lab reset before I continued into the SWIFT stage, and my access was lost. Continuing would have meant rebuilding access in a fresh deployment. Because I was undertaking the room as part of my Certificate IV assessment, I kept this write-up focused on the work carried out for that assessment rather than starting a new run after the reset.</p>
+
+<p>That makes this an account of my assessment work, with evidence through flag 16, rather than a complete walkthrough of every room objective. I did not complete the remaining jump-host-to-application path, the required application roles, or the final SWIFT transfer between the supplied accounts.</p>
 
 <p>Here is what I completed and what I would need to revisit.</p>
 </section>
