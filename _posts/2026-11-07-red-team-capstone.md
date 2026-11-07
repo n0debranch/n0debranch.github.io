@@ -59,7 +59,7 @@ html[data-mode="dark"] .capstone-article .code-risk { color: #ff938a; }
 <h3 id="outcome">Outcome</h3>
 <p>I collected 16 flags, working from the exposed services into the corporate network, then on to the root and BANK domains.</p>
 
-<p>I reached flag 16 before the lab reset, leaving the SWIFT stage unfinished. Laura's account already had Domain Admin access when I checked it; I cover that below.</p>
+<p>I reached flag 16 before the lab reset, leaving the SWIFT stage unfinished. There was also an issue with Domain Admin privileges, which I outline later in this write-up.</p>
 
 <h2 id="in-scope">In-Scope</h2>
 
